@@ -10,7 +10,7 @@ import {
 import { LoginResponse } from './auth.types';
 
 export const loginResponse = (user: any, jwtService: JwtService) => {
-  const accessToken = jwtService.sign(
+  const access = jwtService.sign(
     { id: user.id },
     {
       secret: SECRET_KEY,
@@ -19,7 +19,7 @@ export const loginResponse = (user: any, jwtService: JwtService) => {
     },
   );
 
-  const refreshToken = jwtService.sign(
+  const refresh = jwtService.sign(
     { id: user.id },
     {
       secret: SECRET_KEY,
@@ -30,8 +30,7 @@ export const loginResponse = (user: any, jwtService: JwtService) => {
 
   const obj: LoginResponse = {
     user,
-    accessToken,
-    refreshToken: refreshToken,
+    tokens: { access, refresh },
   };
 
   return obj;

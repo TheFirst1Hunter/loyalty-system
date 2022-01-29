@@ -20,6 +20,15 @@ export class CreateCostumerDto {
 
   @MinLength(4)
   @MaxLength(8)
+  @IsString()
+  pin: string;
+
+  // Iraqi and international numbers
+  @MaxLength(16)
+  @MinLength(10)
+  @IsString()
+  phoneNumber: string;
+
   @IsInt()
-  pin: number;
+  points: number;
 }

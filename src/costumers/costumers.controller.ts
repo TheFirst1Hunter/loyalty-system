@@ -1,34 +1,58 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Param,
+  Delete,
+  Query,
+  UseGuards,
+  Put,
+} from '@nestjs/common';
 import { CostumersService } from './costumers.service';
 import { CreateCostumerDto } from './dto/create-costumer.dto';
 import { UpdateCostumerDto } from './dto/update-costumer.dto';
+import { QueryCostumerDto } from './dto/filter-costumer.dto';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { ResponseShape } from '../utils';
 
+@UseGuards(JwtAuthGuard)
 @Controller('costumers')
 export class CostumersController {
   constructor(private readonly costumersService: CostumersService) {}
 
   @Post()
-  create(@Body() createCostumerDto: CreateCostumerDto) {
-    return this.costumersService.create(createCostumerDto);
+  async create(@Body() createCostumerDto: CreateCostumerDto) {
+    const data = await this.costumersService.create(createCostumerDto);
+
+    return new ResponseShape(true, data);
   }
 
   @Get()
-  findAll() {
-    return this.costumersService.findAll();
+  async findAll(@Query() query: QueryCostumerDto) {
+    const data = await this.costumersService.findAll(query);
+
+    return new ResponseShape(true, data);
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.costumersService.findOne(+id);
+  async findOne(@Param('id') id: string) {
+    const data = await this.costumersService.findOne(id);
+
+    return new ResponseShape(true, data);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateCostumerDto: UpdateCostumerDto) {
-    return this.costumersService.update(+id, updateCostumerDto);
+  @Put(':id')
+  async update(
+    @Param('id') id: string,
+    @Body() updateCostumerDto: UpdateCostumerDto,
+  ) {
+    const data = await this.costumersService.update(id, updateCostumerDto);
+    return new ResponseShape(true, data);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.costumersService.remove(+id);
+    return this.costumersService.remove(id);
   }
 }

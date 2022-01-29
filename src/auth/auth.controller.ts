@@ -1,6 +1,7 @@
 import { Controller, Post, Body, Param, Delete } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { RegisterUserDto } from './dto/register-user.dto';
+import { ResponseShape } from '../utils';
 
 @Controller('auth')
 export class AuthController {
@@ -8,7 +9,9 @@ export class AuthController {
 
   @Post('/register')
   register(@Body() registerUserDto: RegisterUserDto) {
-    return this.authService.register(registerUserDto);
+    const data = this.authService.register(registerUserDto);
+
+    return new ResponseShape(true, data);
   }
 
   @Post('/login')
@@ -17,7 +20,7 @@ export class AuthController {
 
     const user = await this.authService.validateUser(username, password);
 
-    return user;
+    return new ResponseShape(true, user);
   }
 
   @Delete(':id')
