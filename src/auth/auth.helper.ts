@@ -7,7 +7,7 @@ import {
   JWT_REFRESH_TOKEN_LIFETIME,
 } from '../utils/secrets';
 
-import { LoginResponse } from './user.types';
+import { LoginResponse } from './auth.types';
 
 export const loginResponse = (user: any, jwtService: JwtService) => {
   const accessToken = jwtService.sign(
