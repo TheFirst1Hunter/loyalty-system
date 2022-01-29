@@ -2,9 +2,8 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { OrderModule } from './order/order.module';
 import { AuthModule } from './auth/auth.module';
-import { UserModule } from './user/user.module';
+import { CostumersModule } from './costumers/costumers.module';
 
 @Module({
   imports: [
@@ -13,9 +12,8 @@ import { UserModule } from './user/user.module';
       isGlobal: true,
       cache: true,
     }),
-    OrderModule,
     AuthModule,
-    UserModule,
+    CostumersModule,
   ],
   controllers: [AppController],
   providers: [AppService],
