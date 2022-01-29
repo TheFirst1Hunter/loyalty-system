@@ -5,4 +5,5 @@ export class User implements PrismaUser {
   username: string;
   UID: string;
   password: string;
+  active: boolean;
 }
