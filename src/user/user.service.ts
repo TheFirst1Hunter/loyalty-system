@@ -1,27 +1,42 @@
 import { Injectable } from '@nestjs/common';
-import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
+import { JwtService } from '@nestjs/jwt';
+import { compare } from 'bcrypt';
+import { LoginResponse } from './user.types';
+import { RegisterUserDto } from './dto/register-user.dto';
+import { loginResponse, hashPassword } from './user.helper';
+import { User } from './entities/user.entity';
+import { prisma } from '../../prisma';
 
 @Injectable()
 export class UserService {
-  create(createUserDto: CreateUserDto) {
-    return 'This action adds a new user';
+  constructor(private jwtService: JwtService) {}
+
+  async register(registerUserDto: RegisterUserDto): Promise<LoginResponse> {
+    registerUserDto.password = await hashPassword(registerUserDto.password);
+
+    const user = await prisma.user.create({ data: registerUserDto });
+
+    return loginResponse(user, this.jwtService);
   }
 
-  findAll() {
-    return `This action returns all user`;
+  async validateUser(
+    username: string,
+    pass: string,
+  ): Promise<LoginResponse | null> {
+    const user = await this.findByUsername(username);
+
+    const { password } = user;
+
+    if (await compare(pass, password)) {
+      return loginResponse(user, this.jwtService);
+    }
+
+    return null;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} user`;
-  }
-
-  findByUsername(username: string) {
-    return { password: '', username: '' };
-  }
-
-  update(id: number, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
+  async findByUsername(username: string): Promise<User | null> {
+    const User = await prisma.user.findUnique({ where: { username } });
+    return User;
   }
 
   remove(id: number) {
