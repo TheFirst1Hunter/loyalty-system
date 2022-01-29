@@ -11,12 +11,19 @@ datasource db {
 }
 
 model User {
-  id        String   @id @default(uuid())
-  UID       String
-  name      String
-  username  String   @unique
-  password  String
-  birthDate DateTime @default(now())
-  pin       Int
-  serial    Int      @default(autoincrement())
+  id       String @id @default(uuid())
+  UID      String @default(uuid())
+  username String @unique
+  password String
+}
+
+model Costumer {
+  id          String   @id @default(uuid())
+  birthDate   DateTime @default(now())
+  pin         Int
+  serial      Int      @default(autoincrement())
+  name        String
+  points      Int
+  UID         String   @default(uuid())
+  phoneNumber String
 }
