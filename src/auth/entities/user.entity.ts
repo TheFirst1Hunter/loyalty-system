@@ -4,9 +4,5 @@ export class User implements PrismaUser {
   readonly id: string;
   username: string;
   UID: string;
-  birthDate: Date;
-  name: string;
   password: string;
-  pin: number;
-  serial: number;
 }

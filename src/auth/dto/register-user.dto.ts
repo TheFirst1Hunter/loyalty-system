@@ -1,11 +1,4 @@
-import {
-  IsString,
-  IsInt,
-  IsDate,
-  IsOptional,
-  MinLength,
-  MaxLength,
-} from 'class-validator';
+import { IsString, MinLength, MaxLength } from 'class-validator';
 
 // import bcrypt from 'bcrypt';
 
@@ -18,17 +11,7 @@ export class RegisterUserDto {
   @IsString()
   UID: string;
 
-  @IsDate()
-  @IsOptional()
-  birthDate: Date;
-
-  @IsString()
-  name: string;
-
   @IsString()
   @MinLength(3)
   password: string;
-
-  @IsInt()
-  pin: number;
 }
