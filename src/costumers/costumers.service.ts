@@ -1,9 +1,4 @@
-import {
-  HttpCode,
-  Injectable,
-  HttpStatus,
-  HttpException,
-} from '@nestjs/common';
+import { Injectable, HttpStatus, HttpException } from '@nestjs/common';
 import { Costumer } from '@prisma/client';
 import { CreateCostumerDto } from './dto/create-costumer.dto';
 import { UpdateCostumerDto } from './dto/update-costumer.dto';
@@ -28,6 +23,8 @@ export class CostumersService {
       where: {
         active: true,
         birthDate: { gte: filter.dateMin, lte: filter.dateMax },
+        name: { contains: filter.name },
+        serial: filter.serial,
       },
       orderBy: [{ birthDate: 'asc' }],
     });
