@@ -1,4 +1,9 @@
-import { Injectable } from '@nestjs/common';
+import {
+  HttpCode,
+  Injectable,
+  HttpStatus,
+  HttpException,
+} from '@nestjs/common';
 import { Costumer } from '@prisma/client';
 import { CreateCostumerDto } from './dto/create-costumer.dto';
 import { UpdateCostumerDto } from './dto/update-costumer.dto';
@@ -20,14 +25,26 @@ export class CostumersService {
     const costumers = await prisma.costumer.findMany({
       skip: filter.skip,
       take: filter.take,
-      where: { active: true },
+      where: {
+        active: true,
+        birthDate: { gte: filter.dateMin, lte: filter.dateMax },
+      },
+      orderBy: [{ birthDate: 'asc' }],
     });
 
     return costumers;
   }
 
   async findOne(id: string): Promise<Costumer | null> {
-    return await prisma.costumer.findFirst({ where: { id, active: true } });
+    const data = await prisma.costumer.findFirst({
+      where: { id, active: true },
+    });
+
+    if (!data) {
+      throw new HttpException('no user found', HttpStatus.NOT_FOUND);
+    }
+
+    return data;
   }
 
   async update(
