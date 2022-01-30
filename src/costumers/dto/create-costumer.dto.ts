@@ -1,17 +1,17 @@
 import {
   IsString,
   IsInt,
-  IsDate,
   IsOptional,
   MinLength,
   MaxLength,
+  IsDateString,
 } from 'class-validator';
 
 export class CreateCostumerDto {
   @IsString()
   UID: string;
 
-  @IsDate()
+  @IsDateString()
   @IsOptional()
   birthDate: Date;
 
