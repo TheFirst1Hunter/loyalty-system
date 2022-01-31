@@ -6,7 +6,7 @@ const pe = process.env;
 
 export const { SECRET_KEY, DATABASE_URL } = pe;
 
-export const PORT = pe.PORT || 3000;
+export const PORT = pe.PORT || 5555;
 
 export const ENVIRONMENT = pe.ENVIRONMENT || 'development';
 
