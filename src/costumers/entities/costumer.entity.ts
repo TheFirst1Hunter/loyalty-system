@@ -8,7 +8,7 @@ export class Costumer implements PrismaCostumer {
   name: string;
   @Exclude()
   pin: string;
-  points: number;
+  credits: number;
   serial: number;
   phoneNumber: string;
   active: boolean;

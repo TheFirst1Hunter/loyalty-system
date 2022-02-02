@@ -1,41 +1,50 @@
-import { HttpException, HttpStatus } from '@nestjs/common';
-import { Transform } from 'class-transformer';
-import { IsString, IsOptional, isNumberString } from 'class-validator';
+import { Type } from 'class-transformer';
+import {
+  IsString,
+  IsOptional,
+  IsDate,
+  IsBoolean,
+  Allow,
+  IsInt,
+} from 'class-validator';
 
 export class QueryCostumerDto {
-  @Transform(({ value, key, obj }) => {
-    obj[key] = Number(value) || 0;
-  })
+  @Allow()
+  @Type(() => Number)
+  @IsInt()
+  @IsOptional()
   skip = 0;
 
-  @Transform(({ value, key, obj }) => {
-    obj[key] = Number(value) || 5;
-  })
+  @Allow()
+  @Type(() => Number)
+  @IsInt()
+  @IsOptional()
   take = 5;
 
-  @Transform(({ value, key, obj }) => {
-    obj[key] = Boolean(value) || false;
-  })
+  @Allow()
+  @Type(() => Boolean)
+  @IsBoolean()
+  @IsOptional()
   nearestBirthday = false;
 
-  @Transform(({ value, key, obj }) => {
-    obj[key] = new Date(value) || new Date();
-  })
+  @Allow()
+  @Type(() => Date)
+  @IsDate()
+  @IsOptional()
   dateMin: Date;
 
-  @Transform(({ value, key, obj }) => {
-    obj[key] = new Date(value) || new Date();
-  })
+  @Allow()
+  @Type(() => Date)
+  @IsDate()
+  @IsOptional()
   dateMax: Date;
 
   @IsString()
   @IsOptional()
   name: string;
 
-  @Transform(({ value, key, obj }) => {
-    if (isNumberString(value)) obj[key] = Number(value);
-    else
-      throw new HttpException('please enter a number', HttpStatus.BAD_REQUEST);
-  })
+  @Allow()
+  @Type(() => Number)
+  @IsInt()
   serial: number;
 }
