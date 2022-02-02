@@ -24,8 +24,23 @@ model Costumer {
   pin         String
   serial      Int      @default(autoincrement())
   name        String
-  points      Int
+  credits     Int
   UID         String   @default(uuid())
   phoneNumber String
   active      Boolean  @default(true)
+  order       Order[]
+}
+
+model Order {
+  id              String   @id @default(uuid())
+  totalPrice      Int
+  items           String[]
+  tableNumber     Int
+  UID             String
+  date            DateTime @default(now())
+  creditUsed      Int      @default(0)
+  returnedCredits Int      @default(0)
+  costumer        Costumer @relation(fields: [costumerId], references: [id])
+  costumerId      String
+  active          Boolean  @default(true)
 }
