@@ -38,6 +38,15 @@ export class OrderService {
     }
 
     // If he did spend
+    // Credit spent should be less than the total price
+    if (createOrderDto.creditUsed > createOrderDto.totalPrice) {
+      throw new HttpException(
+        'credit spent should not be more than the total price',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+
+    // If his credit is the right amount
     createOrderDto.totalPrice -= createOrderDto.creditUsed;
 
     return await prisma.order.create({ data: createOrderDto });
