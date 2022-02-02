@@ -30,5 +30,5 @@ export class CreateCostumerDto {
   phoneNumber: string;
 
   @IsInt()
-  points: number;
+  credits: number;
 }
