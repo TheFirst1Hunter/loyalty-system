@@ -56,4 +56,10 @@ export class AuthService {
   remove(id: number) {
     return `This action removes a #${id} user`;
   }
+
+  async getUserById(id: string) {
+    const user = await prisma.user.findUnique({ where: { id } });
+
+    return loginResponse(user, this.jwtService);
+  }
 }

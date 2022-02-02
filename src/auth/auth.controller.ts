@@ -1,7 +1,10 @@
 import { Controller, Post, Body, Param, Delete } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { RegisterUserDto } from './dto/register-user.dto';
+import { LoginUserDto } from './dto/login-user.dto';
+import { RefreshToken } from './dto/refreshToken-user.dto';
 import { ResponseShape } from '../utils';
+import { isRefresh } from './auth.helper';
 
 @Controller('auth')
 export class AuthController {
@@ -15,12 +18,23 @@ export class AuthController {
   }
 
   @Post('/login')
-  async login(@Body() body) {
+  async login(@Body() body: LoginUserDto) {
     const { username, password } = body;
 
     const user = await this.authService.validateUser(username, password);
 
     return new ResponseShape(true, user);
+  }
+
+  @Post('/refresh-token')
+  async refresh(@Body() body: RefreshToken) {
+    const { refreshToken } = body;
+
+    const id = isRefresh(refreshToken);
+
+    const data = await this.authService.getUserById(id);
+
+    return new ResponseShape(true, data);
   }
 
   @Delete(':id')
