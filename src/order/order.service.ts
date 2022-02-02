@@ -1,4 +1,5 @@
 import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
+import { Prisma } from '@prisma/client';
 import { CreateOrderDto } from './dto/create-order.dto';
 import { UpdateOrderDto } from './dto/update-order.dto';
 import { QueryOrderDto } from './dto/filter-order.dto';
@@ -43,7 +44,19 @@ export class OrderService {
   }
 
   async findAll(query: QueryOrderDto): Promise<Order[]> {
-    return await prisma.order.findMany({ skip: query.skip, take: query.take });
+    const where: Prisma.OrderWhereInput = {
+      active: true,
+    };
+
+    if (query.discounted) {
+      where.creditUsed = { gt: 0 };
+    }
+
+    return await prisma.order.findMany({
+      skip: query.skip,
+      take: query.take,
+      where,
+    });
   }
 
   async findOne(id: string): Promise<Order | null> {
