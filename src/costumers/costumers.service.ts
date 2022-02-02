@@ -1,5 +1,6 @@
 import { Injectable, HttpStatus, HttpException } from '@nestjs/common';
 import { Costumer } from '@prisma/client';
+import { Cron } from '@nestjs/schedule';
 import { CreateCostumerDto } from './dto/create-costumer.dto';
 import { UpdateCostumerDto } from './dto/update-costumer.dto';
 import { QueryCostumerDto } from './dto/filter-costumer.dto';
@@ -58,5 +59,37 @@ export class CostumersService {
 
   async remove(id: string) {
     await prisma.costumer.update({ where: { id }, data: { active: false } });
+  }
+
+  // Run this function every day at 1 AM
+  @Cron('0 1 * * *')
+  async setBirthdayFlag() {
+    const costumers = await prisma.costumer.findMany();
+
+    const currentDate = new Date();
+
+    const today = currentDate.getDate();
+
+    const thisMonth = currentDate.getMonth();
+
+    for (let index = 0; index < costumers.length; index++) {
+      const costumerBirthday = costumers[index].birthDate;
+
+      if (
+        costumerBirthday.getMonth() === thisMonth &&
+        (costumerBirthday.getDate() === today ||
+          costumerBirthday.getDate() === today + 1)
+      ) {
+        await prisma.costumer.update({
+          where: { id: costumers[index].id },
+          data: { isHisBirthday: true },
+        });
+      } else {
+        await prisma.costumer.update({
+          where: { id: costumers[index].id },
+          data: { isHisBirthday: false },
+        });
+      }
+    }
   }
 }

@@ -12,4 +12,5 @@ export class Costumer implements PrismaCostumer {
   serial: number;
   phoneNumber: string;
   active: boolean;
+  isHisBirthday: boolean;
 }

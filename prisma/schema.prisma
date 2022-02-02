@@ -19,16 +19,17 @@ model User {
 }
 
 model Costumer {
-  id          String   @id @default(uuid())
-  birthDate   DateTime @default(now())
-  pin         String
-  serial      Int      @default(autoincrement())
-  name        String
-  credits     Int
-  UID         String   @default(uuid())
-  phoneNumber String
-  active      Boolean  @default(true)
-  order       Order[]
+  id            String   @id @default(uuid())
+  birthDate     DateTime @default(now())
+  pin           String
+  serial        Int      @default(autoincrement())
+  name          String
+  credits       Int
+  UID           String   @default(uuid())
+  phoneNumber   String
+  active        Boolean  @default(true)
+  isHisBirthday Boolean  @default(false)
+  order         Order[]
 }
 
 model Order {

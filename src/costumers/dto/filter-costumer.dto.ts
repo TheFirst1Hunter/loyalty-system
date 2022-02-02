@@ -46,5 +46,6 @@ export class QueryCostumerDto {
   @Allow()
   @Type(() => Number)
   @IsInt()
+  @IsOptional()
   serial: number;
 }
