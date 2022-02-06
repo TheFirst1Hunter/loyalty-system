@@ -7,7 +7,7 @@ export const orders = async (ids: string[]) => {
   for (let index = 0; index < ids.length; index++) {
     for (let i = 0; i < parseInt(`${(Math.random() * 100) % 10}`); i++) {
       for (let j = 0; j < parseInt(`${(Math.random() * 100) % 10}`); j++) {
-        items.push(`${faker.name.findName}-${faker.name.middleName}`);
+        items[j] = `${faker.name.findName()}-${faker.name.middleName()}`;
       }
       const creditUsed = parseInt(`${(Math.random() * 100) % 10}`);
       const totalPrice = faker.datatype.number() * 10000;

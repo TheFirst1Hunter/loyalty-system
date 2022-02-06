@@ -4,6 +4,8 @@ const main = async () => {
   const ids = await costumers();
 
   await orders(ids);
+
+  console.log('seeded 🌱');
 };
 
 main();
