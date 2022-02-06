@@ -3,12 +3,12 @@ import { v4 as uuid4 } from 'uuid';
 import { prisma } from '..';
 
 export const orders = async (ids: string[]) => {
+  const items = [];
   for (let index = 0; index < ids.length; index++) {
-    for (
-      let index = 0;
-      index < parseInt(`${(Math.random() * 100) % 10}`);
-      index++
-    ) {
+    for (let i = 0; i < parseInt(`${(Math.random() * 100) % 10}`); i++) {
+      for (let j = 0; j < parseInt(`${(Math.random() * 100) % 10}`); j++) {
+        items.push(`${faker.name.findName}-${faker.name.middleName}`);
+      }
       const creditUsed = parseInt(`${(Math.random() * 100) % 10}`);
       const totalPrice = faker.datatype.number() * 10000;
 
@@ -22,7 +22,7 @@ export const orders = async (ids: string[]) => {
           date: faker.date.recent(),
           creditUsed,
           returnedCredits: creditUsed ? 0 : totalPrice * 0.1,
-          items: faker.random.arrayElements(),
+          items,
         },
       });
     }
