@@ -14,7 +14,7 @@ export const costumers = async (): Promise<string[]> => {
         UID: uuid4(),
         active: true,
         birthDate: faker.date.past(),
-        isHisBirthday: false,
+        isHisBirthday: Math.random() % 2 == 0,
         serial: index,
       },
     });
