@@ -1,4 +1,5 @@
 import { Order as PrismaOrder } from '@prisma/client';
+import { Costumer } from '../../costumers/entities/costumer.entity';
 
 export class Order implements PrismaOrder {
   id: string;
@@ -11,4 +12,10 @@ export class Order implements PrismaOrder {
   tableNumber: number;
   totalPrice: number;
   active: boolean;
+}
+
+export class OrderCostumer extends Order {
+  costumerName: string;
+  costumerSerial: number;
+  costumer?: Partial<Costumer>;
 }
