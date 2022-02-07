@@ -1,1 +1,5 @@
-export class Statistic {}
+export class Statistic {
+  dailyIncome: JSON;
+
+  orderCount: JSON;
+}

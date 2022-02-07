@@ -1,34 +1,14 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Query } from '@nestjs/common';
 import { StatisticsService } from './statistics.service';
-import { CreateStatisticDto } from './dto/create-statistic.dto';
-import { UpdateStatisticDto } from './dto/update-statistic.dto';
+import { QueryStatisticsDto } from './dto/filter-statistics.dto';
+import { ResponseShape } from '../utils';
 
 @Controller('statistics')
 export class StatisticsController {
   constructor(private readonly statisticsService: StatisticsService) {}
-
-  @Post()
-  create(@Body() createStatisticDto: CreateStatisticDto) {
-    return this.statisticsService.create(createStatisticDto);
-  }
-
   @Get()
-  findAll() {
-    return this.statisticsService.findAll();
-  }
-
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.statisticsService.findOne(+id);
-  }
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateStatisticDto: UpdateStatisticDto) {
-    return this.statisticsService.update(+id, updateStatisticDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.statisticsService.remove(+id);
+  async findAll(@Query() query: QueryStatisticsDto) {
+    const data = await this.statisticsService.findAll(query);
+    return new ResponseShape(true, data);
   }
 }

@@ -11,7 +11,8 @@ datasource db {
 }
 
 model User {
-  id       String  @id @default(uuid())
+  id String @id @default(uuid())
+
   UID      String  @default(uuid())
   username String  @unique
   password String
@@ -19,7 +20,8 @@ model User {
 }
 
 model Costumer {
-  id            String   @id @default(uuid())
+  id String @id @default(uuid())
+
   birthDate     DateTime @default(now())
   pin           String
   serial        Int      @default(autoincrement())
@@ -29,11 +31,13 @@ model Costumer {
   phoneNumber   String
   active        Boolean  @default(true)
   isHisBirthday Boolean  @default(false)
-  order         Order[]
+
+  order Order[]
 }
 
 model Order {
-  id              String   @id @default(uuid())
+  id String @id @default(uuid())
+
   totalPrice      Int
   items           String[]
   tableNumber     Int
@@ -41,7 +45,15 @@ model Order {
   date            DateTime @default(now())
   creditUsed      Int      @default(0)
   returnedCredits Int      @default(0)
-  costumer        Costumer @relation(fields: [costumerId], references: [id])
-  costumerId      String
   active          Boolean  @default(true)
+
+  costumerId String
+  costumer   Costumer @relation(fields: [costumerId], references: [id])
+}
+
+model Statistics {
+  id String @id @default(uuid())
+
+  dailyIncome    Int
+  callsAndOrders Int
 }
