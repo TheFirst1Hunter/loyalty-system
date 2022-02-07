@@ -11,7 +11,11 @@ export const sortByBirthday = (data: Costumer[], date: Date = new Date()) => {
 
   const thisDay = date.getDate();
 
+  // close birthdays by ascending order
   const ddd = [];
+
+  // Birthdays that make it out of the condition
+  const farBirthdays = [];
 
   data.forEach((d) => {
     if (
@@ -19,8 +23,10 @@ export const sortByBirthday = (data: Costumer[], date: Date = new Date()) => {
       (d.birthDate.getMonth() == thisMonth && d.birthDate.getDate() >= thisDay)
     ) {
       ddd.push(d);
+    } else {
+      farBirthdays.push(d);
     }
   });
 
-  return ddd;
+  return [...ddd, ...farBirthdays];
 };
