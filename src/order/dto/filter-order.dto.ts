@@ -1,5 +1,5 @@
 import { Type } from 'class-transformer';
-import { IsInt, Allow, IsBoolean, IsOptional } from 'class-validator';
+import { IsInt, Allow, IsBoolean, IsOptional, IsUUID } from 'class-validator';
 export class QueryOrderDto {
   @Allow()
   @Type(() => Number)
@@ -16,4 +16,10 @@ export class QueryOrderDto {
   @IsBoolean()
   @IsOptional()
   discounted;
+
+  @Allow()
+  @Type(() => String)
+  @IsUUID()
+  @IsOptional()
+  costumerId;
 }

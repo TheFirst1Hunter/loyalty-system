@@ -55,6 +55,7 @@ export class OrderService {
   async findAll(query: QueryOrderDto): Promise<Order[]> {
     const where: Prisma.OrderWhereInput = {
       active: true,
+      costumerId: query.costumerId,
     };
 
     if (query.discounted) {
