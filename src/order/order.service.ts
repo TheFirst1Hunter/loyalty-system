@@ -1,9 +1,10 @@
 import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
+import _ from 'lodash';
 import { CreateOrderDto } from './dto/create-order.dto';
 import { UpdateOrderDto } from './dto/update-order.dto';
 import { QueryOrderDto } from './dto/filter-order.dto';
-import { Order } from './entities/order.entity';
+import { Order, OrderCostumer } from './entities/order.entity';
 import { prisma } from '../../prisma';
 
 @Injectable()
@@ -52,7 +53,7 @@ export class OrderService {
     return await prisma.order.create({ data: createOrderDto });
   }
 
-  async findAll(query: QueryOrderDto): Promise<Order[]> {
+  async findAll(query: QueryOrderDto): Promise<OrderCostumer[]> {
     const where: Prisma.OrderWhereInput = {
       active: true,
       costumerId: query.costumerId,
@@ -62,11 +63,25 @@ export class OrderService {
       where.creditUsed = { gt: 0 };
     }
 
-    return await prisma.order.findMany({
+    const data = await prisma.order.findMany({
       skip: query.skip,
       take: query.take,
       where,
+      include: { costumer: { select: { name: true, serial: true } } },
     });
+
+    const newData = [];
+
+    data.forEach((d) => {
+      const temp: OrderCostumer = { ...d, costumerName: '', costumerSerial: 0 };
+
+      temp.costumerName = temp.costumer.name;
+      temp.costumerSerial = temp.costumer.serial;
+
+      newData.push(_.omit(temp, 'costumer'));
+    });
+
+    return newData;
   }
 
   async findOne(id: string): Promise<Order | null> {
