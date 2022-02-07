@@ -53,7 +53,7 @@ export class OrderService {
     return await prisma.order.create({ data: createOrderDto });
   }
 
-  async findAll(query: QueryOrderDto): Promise<OrderCostumer[]> {
+  async findAll(query: QueryOrderDto): Promise<Order[]> {
     const where: Prisma.OrderWhereInput = {
       active: true,
       costumerId: query.costumerId,
@@ -67,25 +67,27 @@ export class OrderService {
       skip: query.skip,
       take: query.take,
       where,
+    });
+
+    return data;
+  }
+
+  async findOne(id: string): Promise<OrderCostumer | null> {
+    const data = await prisma.order.findUnique({
+      where: { id },
       include: { costumer: { select: { name: true, serial: true } } },
     });
 
-    const newData = [];
+    const newData: OrderCostumer = {
+      ...data,
+      costumerName: '',
+      costumerSerial: 0,
+    };
 
-    data.forEach((d) => {
-      const temp: OrderCostumer = { ...d, costumerName: '', costumerSerial: 0 };
-
-      temp.costumerName = temp.costumer.name;
-      temp.costumerSerial = temp.costumer.serial;
-
-      newData.push(_.omit(temp, 'costumer'));
-    });
+    newData.costumerName = data.costumer.name;
+    newData.costumerSerial = data.costumer.serial;
 
     return newData;
-  }
-
-  async findOne(id: string): Promise<Order | null> {
-    return await prisma.order.findUnique({ where: { id } });
   }
 
   async update(id: string, updateOrderDto: UpdateOrderDto) {
