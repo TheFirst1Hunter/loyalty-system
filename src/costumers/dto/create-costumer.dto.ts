@@ -8,9 +8,6 @@ import {
 } from 'class-validator';
 
 export class CreateCostumerDto {
-  @IsString()
-  UID: string;
-
   @IsDateString()
   @IsOptional()
   birthDate: Date;
@@ -30,5 +27,6 @@ export class CreateCostumerDto {
   phoneNumber: string;
 
   @IsInt()
+  @IsOptional()
   credits: number;
 }

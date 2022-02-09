@@ -26,7 +26,7 @@ model Costumer {
   pin           String
   serial        Int      @default(autoincrement())
   name          String
-  credits       Int
+  credits       Int      @default(0)
   UID           String   @default(uuid())
   phoneNumber   String
   active        Boolean  @default(true)
@@ -49,11 +49,4 @@ model Order {
 
   costumerId String
   costumer   Costumer @relation(fields: [costumerId], references: [id])
-}
-
-model Statistics {
-  id String @id @default(uuid())
-
-  dailyIncome    Int
-  callsAndOrders Int
 }
