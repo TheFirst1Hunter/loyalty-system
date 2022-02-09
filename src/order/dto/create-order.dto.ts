@@ -12,6 +12,7 @@ export class CreateOrderDto {
   costumerId: string;
 
   @IsString()
+  @IsOptional()
   UID: string;
 
   @IsNumber()
