@@ -23,8 +23,9 @@ export class QueryOrderDto {
   @IsOptional()
   costumerId;
 
+  // Search weather it's a costumerName or a UUID
   @Allow()
   @Type(() => String)
   @IsOptional()
-  costumerName;
+  name;
 }

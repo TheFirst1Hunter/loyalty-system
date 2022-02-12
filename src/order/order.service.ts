@@ -56,7 +56,15 @@ export class OrderService {
     const where: Prisma.OrderWhereInput = {
       active: true,
       costumerId: query.costumerId,
-      costumer: { name: { contains: query.costumerName } },
+      // The most annoying search, it'll try to match the UID with the name sent by s1mply and if it couldn't it'll try the slow "contains" query
+      OR: [
+        {
+          UID: query.name,
+        },
+        {
+          costumer: { name: { contains: query.name } },
+        },
+      ],
     };
 
     if (query.discounted) {
