@@ -56,16 +56,22 @@ export class OrderService {
     const where: Prisma.OrderWhereInput = {
       active: true,
       costumerId: query.costumerId,
+      costumer: { name: { contains: query.costumerName } },
     };
 
     if (query.discounted) {
       where.creditUsed = { gt: 0 };
     }
 
+    const include: Prisma.OrderInclude = {
+      costumer: { select: { name: true } },
+    };
+
     const data = await prisma.order.findMany({
       skip: query.skip,
       take: query.take,
       where,
+      include,
     });
 
     return data;

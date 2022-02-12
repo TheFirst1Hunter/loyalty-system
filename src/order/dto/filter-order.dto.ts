@@ -22,4 +22,9 @@ export class QueryOrderDto {
   @IsUUID()
   @IsOptional()
   costumerId;
+
+  @Allow()
+  @Type(() => String)
+  @IsOptional()
+  costumerName;
 }
