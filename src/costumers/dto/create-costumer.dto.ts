@@ -1,15 +1,29 @@
+import { HttpException, HttpStatus } from '@nestjs/common';
 import {
   IsString,
   IsInt,
   IsOptional,
   MinLength,
   MaxLength,
-  IsDateString,
+  Allow,
+  isDate
 } from 'class-validator';
 
+import { Type, Transform } from 'class-transformer';
+
 export class CreateCostumerDto {
-  @IsDateString()
-  @IsOptional()
+  // @IsString()
+  // @Type(() => Date)
+  @Allow()
+  @Transform(({ value, obj, key }) => {
+    const d = new Date(value);
+
+    if (!isDate(d)) {
+      throw new HttpException('wrong date format', HttpStatus.BAD_REQUEST);
+    }
+
+    return d;
+  })
   birthDate: Date;
 
   @IsString()
