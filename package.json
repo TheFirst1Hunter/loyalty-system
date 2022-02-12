@@ -21,7 +21,8 @@
     "test:e2e": "jest --config ./test/jest-e2e.json",
     "seed": "ts-node prisma/seed",
     "prismaStudio": "npx prisma studio",
-    "migrate": "npx prisma migrate dev"
+    "migrate": "npx prisma migrate dev",
+    "push:dev": "git push origin dev"
   },
   "dependencies": {
     "@nestjs/common": "^8.0.0",
