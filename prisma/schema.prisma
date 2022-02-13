@@ -50,5 +50,4 @@ model Order {
   costumerId String
   costumer   Costumer @relation(fields: [costumerId], references: [id])
 
-  x String?  @default(uuid())
 }
