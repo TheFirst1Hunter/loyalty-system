@@ -41,7 +41,7 @@ model Order {
   totalPrice      Int
   items           String[]
   tableNumber     Int
-  UID             String
+  UID             String   @default(uuid())
   date            DateTime @default(now())
   creditUsed      Int      @default(0)
   returnedCredits Int      @default(0)
