@@ -9,7 +9,7 @@ import {
   UseGuards,
   Put,
 } from '@nestjs/common';
-import { ApiQuery,ApiTags } from '@nestjs/swagger'
+import { ApiQuery, ApiTags, ApiBearerAuth } from '@nestjs/swagger'
 import { CostumersService } from './costumers.service';
 import { CreateCostumerDto } from './dto/create-costumer.dto';
 import { UpdateCostumerDto } from './dto/update-costumer.dto';
@@ -18,6 +18,7 @@ import { sortByBirthday } from './costumer.helpers';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { ResponseShape } from '../utils';
 
+@ApiBearerAuth()
 @ApiTags('costumer')
 @UseGuards(JwtAuthGuard)
 @Controller('costumers')

@@ -14,6 +14,7 @@ async function bootstrap() {
     .setDescription('a loyalty system made for biat halab')
     .setVersion('1.0')
     .addTag('tags')
+    .addBasicAuth()
     .build();
 
   app.use(cors({ origin: '*' }));

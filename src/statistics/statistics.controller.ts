@@ -1,9 +1,10 @@
 import { Controller, Get, Query } from '@nestjs/common';
-import { ApiQuery, ApiTags } from '@nestjs/swagger';
+import { ApiQuery, ApiTags, ApiBearerAuth } from '@nestjs/swagger';
 import { StatisticsService } from './statistics.service';
 import { QueryStatisticsDto } from './dto/filter-statistics.dto';
 import { ResponseShape } from '../utils';
 
+@ApiBearerAuth()
 @ApiTags('statistics')
 @Controller('statistics')
 export class StatisticsController {
