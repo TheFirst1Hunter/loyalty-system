@@ -1,11 +1,14 @@
-import { Injectable, HttpStatus, HttpException } from '@nestjs/common';
+import { Injectable, HttpStatus, HttpException, Inject } from '@nestjs/common';
 import { isDate } from 'class-validator';
 import { QueryStatisticsDto } from './dto/filter-statistics.dto';
 import { Statistic } from './entities/statistic.entity';
 import { getDaysInBetween, incrementDate } from '../utils';
-import { prisma } from '../../prisma';
+import { globalProviders } from '../globals/global.types';
+import { PrismaClient } from '@prisma/client';
+
 @Injectable()
 export class StatisticsService {
+  constructor(@Inject(globalProviders.prisma) private prisma: PrismaClient) {}
   async create() {
     //
   }
@@ -53,8 +56,8 @@ export class StatisticsService {
     }
 
     // Query the daily income
-    const dailyIncome = (await prisma.$queryRawUnsafe(incomeQuery))[0];
-    const orderCount = (await prisma.$queryRawUnsafe(orderCountQuery))[0];
+    const dailyIncome = (await this.prisma.$queryRawUnsafe(incomeQuery))[0];
+    const orderCount = (await this.prisma.$queryRawUnsafe(orderCountQuery))[0];
 
     return { dailyIncome, orderCount };
   }

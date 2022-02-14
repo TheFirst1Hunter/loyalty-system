@@ -1,24 +1,26 @@
-import { Injectable, HttpStatus, HttpException } from '@nestjs/common';
-import { Costumer } from '@prisma/client';
+import { Injectable, HttpStatus, HttpException, Inject } from '@nestjs/common';
+import { Costumer , PrismaClient } from '@prisma/client';
 import { Cron } from '@nestjs/schedule';
 import { CreateCostumerDto } from './dto/create-costumer.dto';
 import { UpdateCostumerDto } from './dto/update-costumer.dto';
 import { QueryCostumerDto } from './dto/filter-costumer.dto';
 import { hashPassword } from './costumer.helpers';
-import { prisma } from '../../prisma';
+import { globalProviders } from '../globals/global.types';
 
 @Injectable()
 export class CostumersService {
+  constructor(@Inject(globalProviders.prisma) private prisma: PrismaClient){ }
+
   async create(createCostumerDto: CreateCostumerDto): Promise<Costumer> {
     createCostumerDto.pin = await hashPassword(createCostumerDto.pin);
 
-    const result = await prisma.costumer.create({ data: createCostumerDto });
+    const result = await this.prisma.costumer.create({ data: createCostumerDto });
 
     return result;
   }
 
   async findAll(filter: QueryCostumerDto): Promise<Costumer[]> {
-    const costumers = await prisma.costumer.findMany({
+    const costumers = await this.prisma.costumer.findMany({
       skip: filter.skip,
       take: filter.take,
       where: {
@@ -34,7 +36,7 @@ export class CostumersService {
   }
 
   async findOne(id: string): Promise<Costumer | null> {
-    const data = await prisma.costumer.findFirst({
+    const data = await this.prisma.costumer.findFirst({
       where: { id, active: true },
     });
 
@@ -49,7 +51,7 @@ export class CostumersService {
     id: string,
     updateCostumerDto: UpdateCostumerDto,
   ): Promise<Costumer> {
-    const newCostumer = await prisma.costumer.update({
+    const newCostumer = await this.prisma.costumer.update({
       where: { id },
       data: updateCostumerDto,
     });
@@ -58,13 +60,13 @@ export class CostumersService {
   }
 
   async remove(id: string) {
-    await prisma.costumer.update({ where: { id }, data: { active: false } });
+    await this.prisma.costumer.update({ where: { id }, data: { active: false } });
   }
 
   // Run this function every day at 1 AM
   @Cron('0 1 * * *')
   async setBirthdayFlag() {
-    const costumers = await prisma.costumer.findMany();
+    const costumers = await this.prisma.costumer.findMany();
 
     const currentDate = new Date();
 
@@ -80,12 +82,12 @@ export class CostumersService {
         (costumerBirthday.getDate() === today ||
           costumerBirthday.getDate() === today + 1)
       ) {
-        await prisma.costumer.update({
+        await this.prisma.costumer.update({
           where: { id: costumers[index].id },
           data: { isHisBirthday: true },
         });
       } else {
-        await prisma.costumer.update({
+        await this.prisma.costumer.update({
           where: { id: costumers[index].id },
           data: { isHisBirthday: false },
         });

@@ -1,20 +1,24 @@
-import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
+import { Injectable, HttpException, HttpStatus, Inject } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { compare } from 'bcrypt';
 import { LoginResponse } from './auth.types';
-import { RegisterUserDto } from '../auth/dto/register-user.dto';
 import { loginResponse, hashPassword } from './auth.helper';
-import { User } from '../auth/entities/user.entity';
-import { prisma } from '../../prisma';
+import { PrismaClient } from '@prisma/client';
+import { globalProviders } from '../globals/global.types';
+import { User } from './entities/user.entity';
+import { RegisterUserDto } from './dto/register-user.dto';
 
 @Injectable()
 export class AuthService {
-  constructor(private jwtService: JwtService) {}
+  constructor(
+    @Inject(globalProviders.prisma) private prisma: PrismaClient,
+    private jwtService: JwtService,
+  ) {}
 
   async register(registerUserDto: RegisterUserDto): Promise<LoginResponse> {
     registerUserDto.password = await hashPassword(registerUserDto.password);
 
-    const user = await prisma.user.create({ data: registerUserDto });
+    const user = await this.prisma.user.create({ data: registerUserDto });
 
     return loginResponse(user, this.jwtService);
   }
@@ -42,7 +46,7 @@ export class AuthService {
   }
 
   async findByUsername(username: string): Promise<User | null> {
-    const user = await prisma.user.findUnique({ where: { username } });
+    const user = await this.prisma.user.findUnique({ where: { username } });
 
     if (!user)
       throw new HttpException(
@@ -58,7 +62,7 @@ export class AuthService {
   }
 
   async getUserById(id: string) {
-    const user = await prisma.user.findUnique({ where: { id } });
+    const user = await this.prisma.user.findUnique({ where: { id } });
 
     return loginResponse(user, this.jwtService);
   }
