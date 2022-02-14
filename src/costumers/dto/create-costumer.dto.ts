@@ -1,4 +1,5 @@
 import { HttpException, HttpStatus } from '@nestjs/common';
+import { ApiProperty } from '@nestjs/swagger';
 import {
   IsString,
   IsInt,
@@ -14,6 +15,7 @@ import { Type, Transform } from 'class-transformer';
 export class CreateCostumerDto {
   // @IsString()
   // @Type(() => Date)
+  @ApiProperty()
   @Allow()
   @Transform(({ value, obj, key }) => {
     const d = new Date(value);
@@ -26,20 +28,24 @@ export class CreateCostumerDto {
   })
   birthDate: Date;
 
+  @ApiProperty()
   @IsString()
   name: string;
 
+  @ApiProperty()
   @MinLength(4)
   @MaxLength(8)
   @IsString()
   pin: string;
 
   // Iraqi and international numbers
+  @ApiProperty()
   @MaxLength(16)
   @MinLength(10)
   @IsString()
   phoneNumber: string;
 
+  @ApiProperty()
   @IsInt()
   @IsOptional()
   credits: number;

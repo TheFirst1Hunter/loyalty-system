@@ -9,6 +9,7 @@ import {
   UseGuards,
   Put,
 } from '@nestjs/common';
+import { ApiQuery,ApiTags } from '@nestjs/swagger'
 import { CostumersService } from './costumers.service';
 import { CreateCostumerDto } from './dto/create-costumer.dto';
 import { UpdateCostumerDto } from './dto/update-costumer.dto';
@@ -17,6 +18,7 @@ import { sortByBirthday } from './costumer.helpers';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { ResponseShape } from '../utils';
 
+@ApiTags('costumer')
 @UseGuards(JwtAuthGuard)
 @Controller('costumers')
 export class CostumersController {
@@ -29,6 +31,7 @@ export class CostumersController {
     return new ResponseShape(true, data);
   }
 
+  @ApiQuery({ type: QueryCostumerDto })
   @Get()
   async findAll(@Query() query: QueryCostumerDto) {
     let data = await this.costumersService.findAll(query);

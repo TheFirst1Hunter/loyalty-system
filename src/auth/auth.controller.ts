@@ -1,4 +1,5 @@
 import { Controller, Post, Body, Param, Delete } from '@nestjs/common';
+import { ApiBody, ApiTags } from '@nestjs/swagger';
 import { AuthService } from './auth.service';
 import { RegisterUserDto } from './dto/register-user.dto';
 import { LoginUserDto } from './dto/login-user.dto';
@@ -6,6 +7,7 @@ import { RefreshToken } from './dto/refreshToken-user.dto';
 import { ResponseShape } from '../utils';
 import { isRefresh } from './auth.helper';
 
+@ApiTags('auth')
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
@@ -42,3 +44,5 @@ export class AuthController {
     return this.authService.remove(+id);
   }
 }
+
+export class UserController {}

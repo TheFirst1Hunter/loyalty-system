@@ -1,3 +1,4 @@
+import { ApiProperty } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
 import {
   IsString,
@@ -9,40 +10,47 @@ import {
 } from 'class-validator';
 
 export class QueryCostumerDto {
+  @ApiProperty({ required: false, example: 0 })
   @Allow()
   @Type(() => Number)
   @IsInt()
   @IsOptional()
-  skip = 0;
+  skip: number;
 
+  @ApiProperty({ required: false, example: 5 })
   @Allow()
   @Type(() => Number)
   @IsInt()
   @IsOptional()
-  take = 5;
+  take: number;
 
+  @ApiProperty({ required: false, example: false })
   @Allow()
   @Type(() => Boolean)
   @IsBoolean()
   @IsOptional()
-  nearestBirthday = false;
+  nearestBirthday: boolean;
 
+  @ApiProperty({ required: false, example: '2022-1-24' })
   @Allow()
   @Type(() => Date)
   @IsDate()
   @IsOptional()
   dateMin: Date;
 
+  @ApiProperty({ required: false, example: '2022-2-24' })
   @Allow()
   @Type(() => Date)
   @IsDate()
   @IsOptional()
   dateMax: Date;
 
+  @ApiProperty({ required: false, example: 'Hamza' })
   @IsString()
   @IsOptional()
   name: string;
 
+  @ApiProperty({ required: false, example: 10 })
   @Allow()
   @Type(() => Number)
   @IsInt()
