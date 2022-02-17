@@ -42,6 +42,11 @@ export class AuthService {
       return loginResponse(user, this.jwtService);
     }
 
+    throw new HttpException(
+      'unable to login with the provided credential',
+      HttpStatus.BAD_REQUEST,
+    );
+
     return null;
   }
 
