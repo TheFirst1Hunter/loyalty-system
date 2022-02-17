@@ -8,6 +8,7 @@ import { CostumersModule } from './costumers/costumers.module';
 import { OrderModule } from './order/order.module';
 import { StatisticsModule } from './statistics/statistics.module';
 import { PrismaModule } from './globals/global.module';
+
 @Module({
   imports: [
     ConfigModule.forRoot({
