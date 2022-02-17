@@ -1,17 +1,19 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
-import { IsInt, Allow, IsBoolean, IsOptional, IsUUID } from 'class-validator';
+import { IsInt, Allow, IsBoolean, IsOptional, IsUUID, } from 'class-validator';
 export class QueryOrderDto {
   @ApiProperty({ required: false, example: 0 })
   @Allow()
   @Type(() => Number)
   @IsInt()
+  @IsOptional()
   skip: number;
 
   @ApiProperty({ required: false, example: 5 })
   @Allow()
   @Type(() => Number)
   @IsInt()
+  @IsOptional()
   take: number;
 
   @ApiProperty({ required: false, example: false })
