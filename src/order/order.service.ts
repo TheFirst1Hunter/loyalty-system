@@ -78,8 +78,6 @@ export class OrderService {
     };
 
     const data = await this.prisma.order.findMany({
-      skip: query.skip,
-      take: query.take,
       where,
       include,
     });
