@@ -17,13 +17,21 @@ export const sortByBirthday = (data: Costumer[], date: Date = new Date()) => {
   // Birthdays that make it out of the condition
   const farBirthdays = [];
 
+  const farMonths = [];
+
   data.forEach((d) => {
     if (
-      d.birthDate.getMonth() > thisMonth ||
-      (d.birthDate.getMonth() == thisMonth && d.birthDate.getDate() >= thisDay)
+      d.birthDate.getMonth() == thisMonth &&
+      d.birthDate.getDate() >= thisDay
     ) {
       ddd.push(d);
     } else {
+      // data.sort(function (a, b) {
+      //   return a.birthDate.getMonth() - b.birthDate.getMonth();
+      // });
+      for (let i = 0; i < thisMonth; i++) {
+        
+      }
       farBirthdays.push(d);
     }
   });
