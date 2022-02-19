@@ -41,7 +41,8 @@ export class StatisticsService {
 
     // Initial query
     let incomeQuery = `select (select sum("totalPrice") from "Order" where date between '${from}' and '${to}') as "DailyIncome"`;
-    let orderCountQuery = `select (select count(*) from "Order") as "allOrders"`;
+    let orderCountQueryTotal = `select (select count(*) from "Order") as "allOrders"`;
+    let ordersWithCreditQuery = `select (select count(*) from "Order" where not  "creditUsed" = 0) as "allOrders"`;
 
     for (let index = 0; index < daysInBetween; index++) {
       const fromFiled = incrementDate(fromDate, 1);
@@ -52,13 +53,19 @@ export class StatisticsService {
 
       // Manipulate the query
       incomeQuery += `,(select sum("totalPrice") from "Order" where date between '${fromFiled}' and '${toFiled}') as "${fromFiled}"`;
-      orderCountQuery += `,(select count(*) from "Order" where date between '${fromFiled}' and '${toFiled}') as"${fromFiled}"`;
+      orderCountQueryTotal += `,(select count(*) from "Order" where date between '${fromFiled}' and '${toFiled}') as"${fromFiled}"`;
+      ordersWithCreditQuery += `,(select count(*) from "Order" where not  "creditUsed" = 0 and date between '${fromFiled}' and '${toFiled}') as"${fromFiled}"`;
     }
 
     // Query the daily income
     const dailyIncome = (await this.prisma.$queryRawUnsafe(incomeQuery))[0];
-    const orderCount = (await this.prisma.$queryRawUnsafe(orderCountQuery))[0];
+    const orderCount = (
+      await this.prisma.$queryRawUnsafe(orderCountQueryTotal)
+    )[0];
+    const orderCountWithCredit = (
+      await this.prisma.$queryRawUnsafe(ordersWithCreditQuery)
+    )[0];
 
-    return { dailyIncome, orderCount };
+    return { dailyIncome, orderCount, orderCountWithCredit };
   }
 }
