@@ -16,6 +16,6 @@ export class Order implements PrismaOrder {
 
 export class OrderCostumer extends Order {
   costumerName: string;
-  costumerSerial: number;
+  costumerSerial: string;
   costumer?: Partial<Costumer>;
 }

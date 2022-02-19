@@ -9,7 +9,7 @@ export class Costumer implements PrismaCostumer {
   @Exclude()
   pin: string;
   credits: number;
-  serial: number;
+  serial: string;
   phoneNumber: string;
   active: boolean;
   isHisBirthday: boolean;

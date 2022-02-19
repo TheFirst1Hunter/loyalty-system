@@ -96,7 +96,7 @@ export class OrderService {
     const newData: OrderCostumer = {
       ...data,
       costumerName: '',
-      costumerSerial: 0,
+      costumerSerial: '0',
     };
 
     newData.costumerName = data.costumer.name;
