@@ -36,7 +36,7 @@ export class CostumersService {
     // });
 
     // Dumbest filter ever
-    const select = `select "birthDate" , "UID", serial , name, "phoneNumber", "isHisBirthday"`;
+    const select = `select id ,"birthDate" , "UID", serial , name, "phoneNumber", "isHisBirthday"`;
 
     let where = `where active = true`;
 
@@ -57,7 +57,7 @@ export class CostumersService {
 
     console.debug(query);
 
-    const costumers = (await prisma.$queryRawUnsafe(query))[0];
+    const costumers = (await prisma.$queryRawUnsafe(query)) as Costumer[];
 
     return costumers;
   }
