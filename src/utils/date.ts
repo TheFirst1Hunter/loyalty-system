@@ -19,9 +19,9 @@ export const incrementDate = (date: Date, value: number) => {
 
 export const getDate = (date: string) => {
   const day = date.split('-')[2].split('T')[0];
-  const month = date.split('-')[1]
-  const year = date.split('-')[0]
+  const month = date.split('-')[1];
+  const year = date.split('-')[0];
 
   console.debug(date);
   return { day, month, year };
-}
+};
