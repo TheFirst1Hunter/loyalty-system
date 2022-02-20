@@ -21,13 +21,9 @@ export const sortByBirthday = (data: Costumer[], date: Date = new Date()) => {
   const farMonths = [];
 
   data.forEach((d) => {
-    const { day, month } =
+    const { day, month } = getDate(d.birthDate.toString());
 
-      getDate(d.birthDate.toString());
-
-    console.debug(getDate(
-
-      d.birthDate.toString()));
+    console.debug(getDate(d.birthDate.toString()));
     if (month == `${thisMonth}` && day >= `${thisDay}`) {
       ddd.push(d);
     } else {
