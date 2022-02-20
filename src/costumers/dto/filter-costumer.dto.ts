@@ -53,7 +53,7 @@ export class QueryCostumerDto {
   @ApiProperty({ required: false, example: 10 })
   @Allow()
   @Type(() => Number)
-  @IsInt()
+  @IsString()
   @IsOptional()
-  serial: number;
+  serial: string;
 }

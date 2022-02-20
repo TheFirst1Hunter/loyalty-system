@@ -23,20 +23,21 @@ export class CostumersService {
   }
 
   async findAll(filter: QueryCostumerDto): Promise<Costumer[]> {
-    // const costumers = await this.prisma.costumer.findMany({
-    //   skip: filter.skip,
-    //   take: filter.take,
-    //   where: {
-    //     active: true,
-    //     birthDate: { gte: filter.dateMin, lte: filter.dateMax },
-    //     name: { contains: filter.name },
-    //     serial: filter.serial,
-    //   },
-    //   orderBy: [{ birthDate: 'asc' }],
-    // });
+    // const costumers =
+    await this.prisma.costumer.findMany({
+      skip: filter.skip,
+      take: filter.take,
+      where: {
+        active: true,
+        birthDate: { gte: filter.dateMin, lte: filter.dateMax },
+        name: { contains: filter.name },
+        serial: filter.serial,
+      },
+      orderBy: [{ birthDate: 'asc' }],
+    });
 
     // Dumbest filter ever
-    const select = `select id ,"birthDate" , "UID", serial , name, "phoneNumber", "isHisBirthday"`;
+    const select = `SELECT "public"."Costumer"."id", "public"."Costumer"."birthDate", "public"."Costumer"."pin", "public"."Costumer"."serial", "public"."Costumer"."name", "public"."Costumer"."credits", "public"."Costumer"."UID", "public"."Costumer"."phoneNumber", "public"."Costumer"."active", "public"."Costumer"."isHisBirthday" `;
 
     let where = `where active = true`;
 
@@ -53,9 +54,11 @@ export class CostumersService {
       where += ` and similarity(name,'${filter.name}') > 0.2`;
     }
 
-    const query = ` ${select} from "Costumer" ${where} order by "birthDate" ASC`;
+    const query = ` ${select} from "Costumer" ${where} order by "birthDate" ASC limit ${
+      filter.take || 10
+    } offset ${filter.skip || 0}`;
 
-    console.debug(query);
+    // console.debug(query);
 
     const costumers = (await prisma.$queryRawUnsafe(query)) as Costumer[];
 
