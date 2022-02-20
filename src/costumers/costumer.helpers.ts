@@ -1,6 +1,6 @@
 import { genSalt, hash } from 'bcrypt';
 import { Costumer } from './entities/costumer.entity';
-import {getDate} from '../utils/date'
+import { getDate } from '../utils/date';
 
 export const hashPassword = async (text: string) => {
   const salt = await genSalt(12);
@@ -21,13 +21,14 @@ export const sortByBirthday = (data: Costumer[], date: Date = new Date()) => {
   const farMonths = [];
 
   data.forEach((d) => {
-    const {day,month} = getDate(d.birthDate.toString())
+    const { day, month } =
 
-    console.debug(getDate(d.birthDate.toString()))
-    if (
-      month == `${thisMonth}` &&
-      day >= `${thisDay}`
-    ) {
+      getDate(d.birthDate.toString());
+
+    console.debug(getDate(
+
+      d.birthDate.toString()));
+    if (month == `${thisMonth}` && day >= `${thisDay}`) {
       ddd.push(d);
     } else {
       // data.sort(function (a, b) {
