@@ -29,9 +29,7 @@ export const sortByBirthday = (data: Costumer[], date: Date = new Date()) => {
       // data.sort(function (a, b) {
       //   return a.birthDate.getMonth() - b.birthDate.getMonth();
       // });
-      for (let i = 0; i < thisMonth; i++) {
-        
-      }
+      for (let i = 0; i < thisMonth; i++) {}
       farBirthdays.push(d);
     }
   });

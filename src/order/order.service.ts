@@ -8,7 +8,7 @@ import { globalProviders } from '../globals/global.types';
 
 @Injectable()
 export class OrderService {
-  constructor(@Inject(globalProviders.prisma) private prisma: PrismaClient){ }
+  constructor(@Inject(globalProviders.prisma) private prisma: PrismaClient) {}
 
   async create(createOrderDto: CreateOrderDto): Promise<Order> {
     // Get the costumer to get his old credit and check if he/she exists
@@ -106,7 +106,10 @@ export class OrderService {
   }
 
   async update(id: string, updateOrderDto: UpdateOrderDto) {
-    return await this.prisma.order.update({ where: { id }, data: updateOrderDto });
+    return await this.prisma.order.update({
+      where: { id },
+      data: updateOrderDto,
+    });
   }
 
   async remove(id: string) {

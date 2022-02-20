@@ -9,7 +9,7 @@ import {
   UseGuards,
   Put,
 } from '@nestjs/common';
-import { ApiQuery, ApiTags, ApiBearerAuth } from '@nestjs/swagger'
+import { ApiQuery, ApiTags, ApiBearerAuth } from '@nestjs/swagger';
 import { CostumersService } from './costumers.service';
 import { CreateCostumerDto } from './dto/create-costumer.dto';
 import { UpdateCostumerDto } from './dto/update-costumer.dto';

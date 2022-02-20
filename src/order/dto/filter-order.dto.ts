@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
-import { IsInt, Allow, IsBoolean, IsOptional, IsUUID, } from 'class-validator';
+import { IsInt, Allow, IsBoolean, IsOptional, IsUUID } from 'class-validator';
 export class QueryOrderDto {
   @ApiProperty({ required: false, example: 0 })
   @Allow()
@@ -23,7 +23,10 @@ export class QueryOrderDto {
   @IsOptional()
   discounted: boolean;
 
-  @ApiProperty({ required: false, example: '0083d1ea-a07b-4a3c-a6ef-1bb6200612a0' })
+  @ApiProperty({
+    required: false,
+    example: '0083d1ea-a07b-4a3c-a6ef-1bb6200612a0',
+  })
   @Allow()
   @Type(() => String)
   @IsUUID()

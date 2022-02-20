@@ -9,7 +9,7 @@ import { ResponseShape } from '../utils';
 @Controller('statistics')
 export class StatisticsController {
   constructor(private readonly statisticsService: StatisticsService) {}
-@ApiQuery({ type: QueryStatisticsDto })
+  @ApiQuery({ type: QueryStatisticsDto })
   @Get()
   async findAll(@Query() query: QueryStatisticsDto) {
     const data = await this.statisticsService.findAll(query);
