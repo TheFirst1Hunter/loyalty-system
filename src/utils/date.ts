@@ -22,6 +22,5 @@ export const getDate = (date: string) => {
   const month = date.split('-')[1];
   const year = date.split('-')[0];
 
-  console.debug(date);
-  return { day, month, year };
+  return { day: Number(day), month: Number(month), year: Number(year) };
 };
