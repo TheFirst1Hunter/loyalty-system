@@ -31,7 +31,7 @@ export const sortByBirthday = (data: Costumer[], date: Date = new Date()) => {
       ddd.push(d);
     } else {
       if (month == thisMonth && day < thisDay) {
-        console.debug(d)
+        console.debug(d);
         pastDays.push(d);
       } else {
         farBirthdays.push(d);
@@ -48,8 +48,7 @@ export const sortByBirthday = (data: Costumer[], date: Date = new Date()) => {
 
   farBirthdays.sort(function (a, b) {
     return (
-      getDate(a.birthDate.toString()).day -
-      getDate(b.birthDate.toString()).day
+      getDate(a.birthDate.toString()).day - getDate(b.birthDate.toString()).day
     );
   });
 
