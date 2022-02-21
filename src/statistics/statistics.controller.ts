@@ -16,11 +16,10 @@ export class StatisticsController {
     return new ResponseShape(true, data);
   }
 
-@ApiQuery({ type: QueryStatisticsDto })
-@Get('/income')
+  @ApiQuery({ type: QueryStatisticsDto })
+  @Get('/income')
   async getIncome(@Query() query: QueryStatisticsDto) {
-  const data = await this.statisticsService.getIncome(query);
-  return new ResponseShape(true, data);
-}
-
+    const data = await this.statisticsService.getIncome(query);
+    return new ResponseShape(true, data);
+  }
 }

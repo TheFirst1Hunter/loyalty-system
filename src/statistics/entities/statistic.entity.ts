@@ -1,8 +1,8 @@
-export  interface StatisticIncome {
+export interface StatisticIncome {
   dailyIncome: JSON;
 }
 
-export  interface  StatisticOrder {
+export interface StatisticOrder {
   orderCount: JSON;
 
   orderCountWithCredit: JSON;
