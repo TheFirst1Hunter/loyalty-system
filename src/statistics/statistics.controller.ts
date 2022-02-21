@@ -10,9 +10,16 @@ import { ResponseShape } from '../utils';
 export class StatisticsController {
   constructor(private readonly statisticsService: StatisticsService) {}
   @ApiQuery({ type: QueryStatisticsDto })
-  @Get()
-  async findAll(@Query() query: QueryStatisticsDto) {
-    const data = await this.statisticsService.findAll(query);
+  @Get('/orders')
+  async getOrders(@Query() query: QueryStatisticsDto) {
+    const data = await this.statisticsService.getOrders(query);
+    return new ResponseShape(true, data);
+  }
+
+  @ApiQuery({ type: QueryStatisticsDto })
+  @Get('/income')
+  async getIncome(@Query() query: QueryStatisticsDto) {
+    const data = await this.statisticsService.getIncome(query);
     return new ResponseShape(true, data);
   }
 }
