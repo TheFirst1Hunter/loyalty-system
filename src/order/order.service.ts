@@ -49,7 +49,8 @@ export class OrderService {
     }
 
     // If his credit is the right amount
-    createOrderDto.totalPrice -= createOrderDto.creditUsed;
+    // They don't want to decrement the price
+    // createOrderDto.totalPrice -= createOrderDto.creditUsed;
 
     return await this.prisma.order.create({ data: createOrderDto });
   }
