@@ -1,4 +1,4 @@
-import { Costumer as PrismaCostumer } from '@prisma/client';
+import { BDstatus, Costumer as PrismaCostumer } from '@prisma/client';
 
 export class Costumer implements PrismaCostumer {
   readonly id: string;
@@ -10,6 +10,6 @@ export class Costumer implements PrismaCostumer {
   serial: string;
   phoneNumber: string;
   active: boolean;
-  isHisBirthday: boolean;
   address: string;
+  birthdayStatus: BDstatus;
 }
