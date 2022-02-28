@@ -34,11 +34,10 @@ export class CostumersService {
     });
 
     // Dumbest filter ever
-    const select = `SELECT "public"."Costumer"."id", "public"."Costumer"."birthDate", "public"."Costumer"."pin", "public"."Costumer"."serial", "public"."Costumer"."name", "public"."Costumer"."credits", "public"."Costumer"."UID", "public"."Costumer"."phoneNumber", "public"."Costumer"."active", "public"."Costumer"."isHisBirthday" `;
+    const select = `SELECT "public"."Costumer"."id", "public"."Costumer"."birthDate", "public"."Costumer"."pin", "public"."Costumer"."serial", "public"."Costumer"."name", "public"."Costumer"."credits", "public"."Costumer"."UID", "public"."Costumer"."phoneNumber", "public"."Costumer"."active", "public"."Costumer"."birthdayStatus" `;
 
     let where = `where active = true`;
 
-    console.debug(filter);
     if (filter.serial) {
       where += ` and serial = '${filter.serial}'`;
     }
@@ -55,7 +54,8 @@ export class CostumersService {
       filter.take || 10
     } offset ${filter.skip || 0}`;
 
-    // console.debug(query);
+    console.debug(query);
+    console.debug('ddd');
 
     const costumers = (await prisma.$queryRawUnsafe(query)) as Costumer[];
 
