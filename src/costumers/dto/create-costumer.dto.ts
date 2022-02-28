@@ -49,4 +49,8 @@ export class CreateCostumerDto {
   @IsInt()
   @IsOptional()
   credits: number;
+
+  @ApiProperty()
+  @IsString()
+  address: string;
 }

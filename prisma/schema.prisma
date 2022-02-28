@@ -22,15 +22,16 @@ model User {
 model Costumer {
   id String @id @default(uuid())
 
-  birthDate     DateTime @default(now())
-  pin           String
-  serial        String      @default(uuid())
-  name          String
-  credits       Int      @default(0)
-  UID           String   @default(uuid())
-  phoneNumber   String
-  active        Boolean  @default(true)
-  isHisBirthday Boolean  @default(false)
+  birthDate      DateTime @default(now())
+  pin            String
+  serial         String   @default(uuid())
+  name           String
+  credits        Int      @default(0)
+  UID            String   @default(uuid())
+  phoneNumber    String
+  active         Boolean  @default(true)
+  birthdayStatus BDstatus @default(nothing)
+  address        String   @default("")
 
   order Order[]
 }
@@ -49,5 +50,11 @@ model Order {
 
   costumerId String
   costumer   Costumer @relation(fields: [costumerId], references: [id])
+}
 
+enum BDstatus {
+  today
+  tomorrow
+  nextMonth
+  nothing
 }
