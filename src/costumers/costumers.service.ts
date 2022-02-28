@@ -4,7 +4,6 @@ import { Cron } from '@nestjs/schedule';
 import { CreateCostumerDto } from './dto/create-costumer.dto';
 import { UpdateCostumerDto } from './dto/update-costumer.dto';
 import { QueryCostumerDto } from './dto/filter-costumer.dto';
-import { hashPassword } from './costumer.helpers';
 import { globalProviders } from '../globals/global.types';
 import { prisma } from '../../prisma';
 
@@ -96,7 +95,7 @@ export class CostumersService {
 
   // Run this function every day at 1 AM
   //'0 1 * * *'
-  @Cron('* * * * * *')
+  @Cron('0 1 * * *')
   async setBirthdayFlag() {
     const costumers = await this.prisma.costumer.findMany();
 
