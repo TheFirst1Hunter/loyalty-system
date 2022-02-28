@@ -1,5 +1,5 @@
 import { Injectable, HttpStatus, HttpException, Inject } from '@nestjs/common';
-import { Costumer, PrismaClient } from '@prisma/client';
+import { Costumer, PrismaClient, BDstatus } from '@prisma/client';
 import { Cron } from '@nestjs/schedule';
 import { CreateCostumerDto } from './dto/create-costumer.dto';
 import { UpdateCostumerDto } from './dto/update-costumer.dto';
@@ -13,8 +13,6 @@ export class CostumersService {
   constructor(@Inject(globalProviders.prisma) private prisma: PrismaClient) {}
 
   async create(createCostumerDto: CreateCostumerDto): Promise<Costumer> {
-    createCostumerDto.pin = await hashPassword(createCostumerDto.pin);
-
     const result = await this.prisma.costumer.create({
       data: createCostumerDto,
     });
@@ -97,7 +95,8 @@ export class CostumersService {
   }
 
   // Run this function every day at 1 AM
-  @Cron('0 1 * * *')
+  //'0 1 * * *'
+  @Cron('* * * * * *')
   async setBirthdayFlag() {
     const costumers = await this.prisma.costumer.findMany();
 
@@ -111,18 +110,30 @@ export class CostumersService {
       const costumerBirthday = costumers[index].birthDate;
 
       if (
-        costumerBirthday.getMonth() === thisMonth &&
-        (costumerBirthday.getDate() === today ||
-          costumerBirthday.getDate() === today + 1)
+        costumerBirthday.getMonth() == thisMonth + 1 ||
+        (costumerBirthday.getMonth() == thisMonth &&
+          (costumerBirthday.getDate() == today ||
+            costumerBirthday.getDate() == today + 1))
       ) {
-        await this.prisma.costumer.update({
+        const birthdayStatus: BDstatus =
+          costumerBirthday.getMonth() == thisMonth
+            ? costumerBirthday.getDate() == today
+              ? 'today'
+              : 'tomorrow'
+            : 'nextMonth';
+
+        await prisma.costumer.update({
           where: { id: costumers[index].id },
-          data: { isHisBirthday: true },
+          data: {
+            birthdayStatus,
+          },
         });
       } else {
-        await this.prisma.costumer.update({
+        await prisma.costumer.update({
           where: { id: costumers[index].id },
-          data: { isHisBirthday: false },
+          data: {
+            birthdayStatus: 'nothing',
+          },
         });
       }
     }
