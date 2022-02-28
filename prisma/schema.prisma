@@ -31,6 +31,7 @@ model Costumer {
   phoneNumber   String
   active        Boolean  @default(true)
   isHisBirthday Boolean  @default(false)
+  address       String   @default("")
 
   order Order[]
 }
@@ -49,5 +50,4 @@ model Order {
 
   costumerId String
   costumer   Costumer @relation(fields: [costumerId], references: [id])
-
 }
