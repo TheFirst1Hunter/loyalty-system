@@ -54,9 +54,6 @@ export class CostumersService {
       filter.take || 10
     } offset ${filter.skip || 0}`;
 
-    console.debug(query);
-    console.debug('ddd');
-
     const costumers = (await prisma.$queryRawUnsafe(query)) as Costumer[];
 
     return costumers;
