@@ -1,4 +1,5 @@
 import { genSalt, hash } from 'bcrypt';
+import _ from 'lodash';
 import { Costumer } from './entities/costumer.entity';
 import { getDate } from '../utils/date';
 
@@ -22,16 +23,17 @@ export const sortByBirthday = (data: Costumer[], date: Date = new Date()) => {
 
   const pastDays = [];
 
+  const highlighted = [];
+
+  const notHighland = [];
+
   data.forEach((d) => {
     const { day, month } = getDate(d.birthDate.toString());
 
-    console.debug(day);
-    console.debug(thisMonth == month);
     if (month == thisMonth && day >= thisDay) {
       ddd.push(d);
     } else {
       if (month == thisMonth && day < thisDay) {
-        console.debug(d);
         pastDays.push(d);
       } else {
         farBirthdays.push(d);
@@ -52,5 +54,21 @@ export const sortByBirthday = (data: Costumer[], date: Date = new Date()) => {
     );
   });
 
-  return [...ddd, ...farBirthdays, ...pastDays];
+  data.forEach((c) => {
+    if (c.birthdayStatus !== 'nothing') {
+      highlighted.push(c);
+    }
+  });
+
+  const unique = [];
+
+  const total = [...highlighted, ...ddd, ...farBirthdays, ...pastDays];
+
+  total.forEach((t) => {
+    if (!unique.includes(t)) {
+      unique.push(t);
+    }
+  });
+
+  return unique;
 };
