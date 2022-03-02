@@ -6,4 +6,5 @@ export class User implements PrismaUser {
   UID: string;
   password: string;
   active: boolean;
+  isSuperAdmin: boolean;
 }
