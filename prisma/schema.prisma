@@ -32,6 +32,7 @@ model Costumer {
   active         Boolean  @default(true)
   birthdayStatus BDstatus @default(nothing)
   address        String   @default("")
+  isSuperAdmin   Boolean  @default(false)
 
   order Order[]
 }
