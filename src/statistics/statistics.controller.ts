@@ -1,10 +1,13 @@
-import { Controller, Get, Query } from '@nestjs/common';
+import { Controller, Get, Query, UseGuards, Req } from '@nestjs/common';
 import { ApiQuery, ApiTags, ApiBearerAuth } from '@nestjs/swagger';
 import { StatisticsService } from './statistics.service';
 import { QueryStatisticsDto } from './dto/filter-statistics.dto';
 import { ResponseShape } from '../utils';
+import { JwtAuthGuard, PermGuard } from '../auth/guards';
 
 @ApiBearerAuth()
+@UseGuards(PermGuard)
+@UseGuards(JwtAuthGuard)
 @ApiTags('statistics')
 @Controller('statistics')
 export class StatisticsController {
