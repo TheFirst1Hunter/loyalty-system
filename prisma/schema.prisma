@@ -13,10 +13,11 @@ datasource db {
 model User {
   id String @id @default(uuid())
 
-  UID      String  @default(uuid())
-  username String  @unique
-  password String
-  active   Boolean @default(true)
+  UID          String  @default(uuid())
+  username     String  @unique
+  password     String
+  active       Boolean @default(true)
+  isSuperAdmin Boolean @default(false)
 }
 
 model Costumer {
@@ -32,7 +33,6 @@ model Costumer {
   active         Boolean  @default(true)
   birthdayStatus BDstatus @default(nothing)
   address        String   @default("")
-  isSuperAdmin   Boolean  @default(false)
 
   order Order[]
 }
