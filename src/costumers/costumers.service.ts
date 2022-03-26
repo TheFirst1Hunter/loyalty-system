@@ -71,6 +71,10 @@ export class CostumersService {
     return data;
   }
 
+  async findByIds(ids: string[]): Promise<Costumer[]> {
+    return await prisma.costumer.findMany({ where: { id: { in: ids } } });
+  }
+
   async update(
     id: string,
     updateCostumerDto: UpdateCostumerDto,
