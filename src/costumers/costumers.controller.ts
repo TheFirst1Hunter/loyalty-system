@@ -74,6 +74,6 @@ export class CostumersController {
       await sendSMS(costumers[index].phoneNumber, smsDto.body);
     }
 
-    return new ResponseShape(true, { data: 'messages sent!' });
+    return new ResponseShape(true, 'messages sent!');
   }
 }
