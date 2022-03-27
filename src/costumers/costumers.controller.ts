@@ -14,9 +14,10 @@ import { CostumersService } from './costumers.service';
 import { CreateCostumerDto } from './dto/create-costumer.dto';
 import { UpdateCostumerDto } from './dto/update-costumer.dto';
 import { QueryCostumerDto } from './dto/filter-costumer.dto';
+import { SmsDTO } from './dto/sms.dto';
 import { sortByBirthday } from './costumer.helpers';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
-import { ResponseShape } from '../utils';
+import { ResponseShape, sendSMS } from '../utils';
 
 @ApiBearerAuth()
 @ApiTags('costumer')
@@ -61,7 +62,18 @@ export class CostumersController {
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.costumersService.remove(id);
+  async remove(@Param('id') id: string) {
+    return await this.costumersService.remove(id);
+  }
+
+  @Post('/sms')
+  async sendSms(@Body() smsDto: SmsDTO) {
+    const costumers = await this.costumersService.findByIds(smsDto.ids);
+
+    for (let index = 0; index < costumers.length; index++) {
+      await sendSMS(costumers[index].phoneNumber, smsDto.body);
+    }
+
+    return new ResponseShape(true, 'messages sent!');
   }
 }
