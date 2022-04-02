@@ -51,6 +51,10 @@ export class CostumersService {
       where += ` and similarity(name,'${filter.name}') > 0.2`;
     }
 
+    if (filter.phoneNumber) {
+      where += ` and similarity("phoneNumber",'${filter.phoneNumber}') > 0.1`;
+    }
+
     const query = ` ${select} from "Costumer" ${where} order by "birthDate" ASC limit ${
       filter.take || 10
     } offset ${filter.skip || 0}`;

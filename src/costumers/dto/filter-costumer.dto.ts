@@ -58,6 +58,11 @@ export class QueryCostumerDto {
   @IsOptional()
   name: string;
 
+  @ApiProperty({ required: false, example: '07707176675' })
+  @IsString()
+  @IsOptional()
+  phoneNumber: string;
+
   @ApiProperty({ required: false, example: 10 })
   @Allow()
   @Type(() => Number)
