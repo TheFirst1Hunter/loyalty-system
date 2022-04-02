@@ -66,7 +66,6 @@ export class QueryCostumerDto {
 
   @ApiProperty({ required: false, example: 10 })
   @Allow()
-  @Type(() => Number)
   @IsString()
   @IsOptional()
   serial: string;
