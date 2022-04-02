@@ -48,6 +48,12 @@ export class OrderService {
       );
     }
 
+    // Decrease the credit value of the user
+    await this.prisma.costumer.update({
+      where: { id: entity.id },
+      data: { credits: entity.credits - createOrderDto.creditUsed },
+    });
+
     // If his credit is the right amount
     // They don't want to decrement the price
     // createOrderDto.totalPrice -= createOrderDto.creditUsed;
