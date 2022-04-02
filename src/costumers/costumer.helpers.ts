@@ -8,7 +8,11 @@ export const hashPassword = async (text: string) => {
   return await hash(text, salt);
 };
 
-export const sortByBirthday = (data: Costumer[], date: Date = new Date()) => {
+export const sortByBirthday = (
+  data: Costumer[],
+  ascending = true,
+  date: Date = new Date(),
+) => {
   const thisMonth = date.getMonth() + 1;
 
   const thisDay = date.getDate();
@@ -70,5 +74,15 @@ export const sortByBirthday = (data: Costumer[], date: Date = new Date()) => {
     }
   });
 
-  return unique;
+  if (ascending) {
+    return unique;
+  }
+
+  const descendingSort = [];
+
+  unique.forEach((u) => {
+    descendingSort.push(unique.pop());
+  });
+
+  return descendingSort;
 };

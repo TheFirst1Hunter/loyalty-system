@@ -41,7 +41,7 @@ export class CostumersController {
     let data = await this.costumersService.findAll(query);
 
     if (query.nearestBirthday) {
-      data = sortByBirthday(data);
+      data = sortByBirthday(data, query.ascending);
     }
 
     return new ResponseShape(true, data);
