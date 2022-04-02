@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Type } from 'class-transformer';
+import { Type, Transform } from 'class-transformer';
 import {
   IsString,
   IsOptional,
@@ -7,6 +7,7 @@ import {
   IsBoolean,
   Allow,
   IsInt,
+  IsBooleanString,
 } from 'class-validator';
 
 export class QueryCostumerDto {
@@ -26,10 +27,17 @@ export class QueryCostumerDto {
 
   @ApiProperty({ required: false, example: false })
   @Allow()
-  @Type(() => Boolean)
   @IsBoolean()
+  @Transform(({ value }) => `${value}` === 'true')
   @IsOptional()
   nearestBirthday: boolean;
+
+  @ApiProperty({ required: false, example: false })
+  @Allow()
+  @IsBoolean()
+  @Transform(({ value }) => `${value}` === 'true')
+  @IsOptional()
+  ascending: boolean;
 
   @ApiProperty({ required: false, example: '2022-1-24' })
   @Allow()
