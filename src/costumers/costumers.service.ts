@@ -49,7 +49,7 @@ export class CostumersService {
 
     // Search for users using their names or phone numbers
     if (filter.name) {
-      where += ` and (similarity(name,'${filter.name}') > 0.2 or similarity("phoneNumber",'${filter.name}') > 0.1)`;
+      where += ` and (similarity(name,'${filter.name}') > 0.2 or similarity("phoneNumber",'${filter.name}') > 0.2)`;
     }
 
     // Deprecated
