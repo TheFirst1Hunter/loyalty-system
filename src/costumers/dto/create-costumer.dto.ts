@@ -47,19 +47,6 @@ export class CreateCostumerDto {
   //   /964s*(?:1|2[1345]|3[02367]|4[023]|5[03]|6|026]|0?7[3-9]d)s*d{3}s*d{3,4}\b/,
   //   { message: 'enter an international iraqi number' },
   // )
-  @Transform(({ value, obj, key }) => {
-    const iraqiInternationalCode = '+964';
-
-    if (value.startsWith(iraqiInternationalCode)) {
-      return value;
-    }
-
-    const newPhoneNumber = value.startsWith('0')
-      ? value.replace('0', iraqiInternationalCode)
-      : iraqiInternationalCode + value;
-
-    return newPhoneNumber;
-  })
   phoneNumber: string;
 
   @ApiProperty()
