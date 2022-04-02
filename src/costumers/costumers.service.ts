@@ -1,6 +1,7 @@
 import { Injectable, HttpStatus, HttpException, Inject } from '@nestjs/common';
 import { Costumer, PrismaClient, BDstatus } from '@prisma/client';
 import { Cron } from '@nestjs/schedule';
+import { costumerPasswordQueryResult } from './costumers.types';
 import { CreateCostumerDto } from './dto/create-costumer.dto';
 import { UpdateCostumerDto } from './dto/update-costumer.dto';
 import { QueryCostumerDto } from './dto/filter-costumer.dto';
@@ -92,6 +93,23 @@ export class CostumersService {
       where: { id },
       data: { active: false },
     });
+  }
+
+  async getCostumerWithPin(
+    phoneNumber,
+    pin,
+  ): Promise<costumerPasswordQueryResult> {
+    const data = await this.prisma.costumer.findFirst({
+      where: { phoneNumber },
+    });
+
+    if (!data) {
+      return costumerPasswordQueryResult['no user found'];
+    }
+
+    return data.pin === pin
+      ? costumerPasswordQueryResult['user found']
+      : costumerPasswordQueryResult['wrong password'];
   }
 
   // Run this function every day at 1 AM
