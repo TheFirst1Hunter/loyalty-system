@@ -9,6 +9,7 @@ import {
   UseGuards,
   Put,
 } from '@nestjs/common';
+
 import { ApiQuery, ApiTags, ApiBearerAuth } from '@nestjs/swagger';
 import { CostumersService } from './costumers.service';
 import { CreateCostumerDto } from './dto/create-costumer.dto';
@@ -17,15 +18,15 @@ import { QueryCostumerDto } from './dto/filter-costumer.dto';
 import { SmsDTO } from './dto/sms.dto';
 import { sortByBirthday } from './costumer.helpers';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
-import { ResponseShape, sendSMS } from '../utils';
+import { ResponseShape, sendSMS, convertToInternational } from '../utils';
 
 @ApiBearerAuth()
 @ApiTags('costumer')
-@UseGuards(JwtAuthGuard)
 @Controller('costumers')
 export class CostumersController {
   constructor(private readonly costumersService: CostumersService) {}
 
+  @UseGuards(JwtAuthGuard)
   @Post()
   async create(@Body() createCostumerDto: CreateCostumerDto) {
     const data = await this.costumersService.create(createCostumerDto);
@@ -34,6 +35,7 @@ export class CostumersController {
   }
 
   @ApiQuery({ type: QueryCostumerDto })
+  @UseGuards(JwtAuthGuard)
   @Get()
   async findAll(@Query() query: QueryCostumerDto) {
     let data = await this.costumersService.findAll(query);
@@ -45,6 +47,7 @@ export class CostumersController {
     return new ResponseShape(true, data);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Get(':id')
   async findOne(@Param('id') id: string) {
     const data = await this.costumersService.findOne(id);
@@ -52,6 +55,7 @@ export class CostumersController {
     return new ResponseShape(true, data);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Put(':id')
   async update(
     @Param('id') id: string,
@@ -61,19 +65,34 @@ export class CostumersController {
     return new ResponseShape(true, data);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Delete(':id')
   async remove(@Param('id') id: string) {
     return await this.costumersService.remove(id);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Post('/sms')
   async sendSms(@Body() smsDto: SmsDTO) {
     const costumers = await this.costumersService.findByIds(smsDto.ids);
 
+    const messagesPromise = [];
+
     for (let index = 0; index < costumers.length; index++) {
-      await sendSMS(costumers[index].phoneNumber, smsDto.body);
+      const newPhoneNumber = convertToInternational(
+        costumers[index].phoneNumber,
+      );
+
+      messagesPromise.push(sendSMS(newPhoneNumber, smsDto.body));
     }
 
+    Promise.all(messagesPromise);
+
     return new ResponseShape(true, 'messages sent!');
+  }
+
+  @Post('/webhooks')
+  async webhooks(@Body() body: any) {
+    const { from, to, Body } = body;
   }
 }
