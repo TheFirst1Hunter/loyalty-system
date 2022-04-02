@@ -58,10 +58,11 @@ export class QueryCostumerDto {
   @IsOptional()
   name: string;
 
-  @ApiProperty({ required: false, example: '07707176675' })
-  @IsString()
-  @IsOptional()
-  phoneNumber: string;
+  // Deprecated: the field "name" is now used to get filter for both name and phone number
+  // @ApiProperty({ required: false, example: '07707176675' })
+  // @IsString()
+  // @IsOptional()
+  // phoneNumber: string;
 
   @ApiProperty({ required: false, example: 10 })
   @Allow()

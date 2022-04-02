@@ -47,13 +47,15 @@ export class CostumersService {
       where += ` and "birthDate" between '${filter.dateMin.toISOString()}' and '${filter.dateMax.toISOString()}'`;
     }
 
+    // Search for users using their names or phone numbers
     if (filter.name) {
-      where += ` and similarity(name,'${filter.name}') > 0.2`;
+      where += ` and (similarity(name,'${filter.name}') > 0.2 or similarity("phoneNumber",'${filter.name}') > 0.1)`;
     }
 
-    if (filter.phoneNumber) {
-      where += ` and similarity("phoneNumber",'${filter.phoneNumber}') > 0.1`;
-    }
+    // Deprecated
+    // if (filter.phoneNumber) {
+    // where += ` and similarity("phoneNumber",'${filter.phoneNumber}') > 0.1`;
+    // }
 
     const query = ` ${select} from "Costumer" ${where} order by "birthDate" ASC limit ${
       filter.take || 10
