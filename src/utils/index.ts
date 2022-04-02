@@ -1,7 +1,7 @@
 import SimpleError from './errors';
 import { ResponseShape } from './response';
 import { getDaysInBetween, formatDate, incrementDate } from './date';
-import sendSMS from './sendSms';
+import sendSMS, { convertToInternational } from './sendSms';
 
 export {
   SimpleError,
@@ -10,4 +10,5 @@ export {
   formatDate,
   incrementDate,
   sendSMS,
+  convertToInternational,
 };
