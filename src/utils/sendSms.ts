@@ -1,3 +1,5 @@
+import { HttpException, HttpStatus } from '@nestjs/common';
+import { MessageBird } from 'messagebird/types';
 import { twilio, messageBirdClient } from './clients';
 
 // Deprecated
@@ -26,16 +28,25 @@ export const convertToInternational = (value: string): string => {
 };
 
 export default function sendSMS(recipients: string[], body: string) {
-  const params = {
-    originator: process.env.MESSAGE_BIRD_ORIGINATOR,
-    recipients,
-    body,
-  };
+  return new Promise((resolve, reject) => {
+    messageBirdClient.messages.create(
+      {
+        datacoding: 'unicode',
+        recipients,
+        body,
+        originator: process.env.MESSAGE_BIRD_ORIGINATOR,
+      },
+      function (err: any) {
+        if (err) {
+          reject(err.errors[0].description);
+          // console.debug(err.errors[0].description);
+          // throw new HttpException(`${err.errors[0].description}`, 400);
+          // return console.log(err);
+        }
+        resolve('finished');
+      },
+    );
 
-  messageBirdClient.messages.create(params, function (err, response) {
-    if (err) {
-      return console.log(err);
-    }
-    console.log(response);
+    // console.log(response);
   });
 }

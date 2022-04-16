@@ -8,6 +8,8 @@ import {
   Query,
   UseGuards,
   Put,
+  HttpException,
+  HttpStatus,
 } from '@nestjs/common';
 
 import { ApiQuery, ApiTags, ApiBearerAuth } from '@nestjs/swagger';
@@ -80,7 +82,11 @@ export class CostumersController {
       convertToInternational(c.phoneNumber),
     );
 
-    sendSMS(phoneNumbers, smsDto.body);
+    try {
+      await sendSMS(phoneNumbers, smsDto.body);
+    } catch (error) {
+      throw new HttpException(error, HttpStatus.BAD_REQUEST);
+    }
 
     return new ResponseShape(true, 'messages sent!');
   }
