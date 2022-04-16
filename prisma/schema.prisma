@@ -29,7 +29,7 @@ model Costumer {
   name           String
   credits        Int      @default(0)
   UID            String   @default(uuid())
-  phoneNumber    String
+  phoneNumber    String   @unique
   active         Boolean  @default(true)
   birthdayStatus BDstatus @default(nothing)
   address        String   @default("")
