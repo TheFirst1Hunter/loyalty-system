@@ -50,7 +50,7 @@ model Order {
   active          Boolean  @default(true)
 
   costumerId String
-  costumer   Costumer @relation(fields: [costumerId], references: [id])
+  costumer   Costumer @relation(fields: [costumerId], references: [id], onDelete: SetNull)
 }
 
 enum BDstatus {
