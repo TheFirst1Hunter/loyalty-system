@@ -1,14 +1,15 @@
-import { twilio } from './clients';
+import { twilio, messageBirdClient } from './clients';
 
-export default async function sendSms(to: string, body: string) {
-  const msgData = {
-    from: process.env.TWILIO_PHONE_NUMBER,
-    to,
-    body,
-  };
+// Deprecated
+// export default async function sendSms(to: string, body: string) {
+//   const msgData = {
+//     from: process.env.TWILIO_PHONE_NUMBER,
+//     to,
+//     body,
+//   };
 
-  await twilio.messages.create(msgData);
-}
+//   await twilio.messages.create(msgData);
+// }
 
 export const convertToInternational = (value: string): string => {
   const iraqiInternationalCode = '+964';
@@ -23,3 +24,18 @@ export const convertToInternational = (value: string): string => {
 
   return newPhoneNumber;
 };
+
+export default function sendSMS(recipients: string[], body: string) {
+  const params = {
+    originator: process.env.MESSAGE_BIRD_ORIGINATOR,
+    recipients,
+    body,
+  };
+
+  messageBirdClient.messages.create(params, function (err, response) {
+    if (err) {
+      return console.log(err);
+    }
+    console.log(response);
+  });
+}

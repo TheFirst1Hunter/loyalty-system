@@ -76,17 +76,11 @@ export class CostumersController {
   async sendSms(@Body() smsDto: SmsDTO) {
     const costumers = await this.costumersService.findByIds(smsDto.ids);
 
-    const messagesPromise = [];
+    const phoneNumbers = costumers.map((c) =>
+      convertToInternational(c.phoneNumber),
+    );
 
-    for (let index = 0; index < costumers.length; index++) {
-      const newPhoneNumber = convertToInternational(
-        costumers[index].phoneNumber,
-      );
-
-      messagesPromise.push(sendSMS(newPhoneNumber, smsDto.body));
-    }
-
-    Promise.all(messagesPromise);
+    sendSMS(phoneNumbers, smsDto.body);
 
     return new ResponseShape(true, 'messages sent!');
   }
