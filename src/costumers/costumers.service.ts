@@ -43,9 +43,11 @@ export class CostumersService {
       where += ` and serial = '${filter.serial}'`;
     }
 
-    if (filter.dateMax || filter.dateMax) {
-      where += ` and "birthDate" between '${filter.dateMin.toISOString()}' and '${filter.dateMax.toISOString()}'`;
-    }
+    // Deprecated
+    // Now the filter works via a reshaping function
+    // if (filter.dateMax || filter.dateMax) {
+    //   where += ` and "birthDate" between '${filter.dateMin.toISOString()}' and '${filter.dateMax.toISOString()}'`;
+    // }
 
     // Search for users using their names or phone numbers
     if (filter.name) {
