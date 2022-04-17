@@ -18,7 +18,7 @@ import { CreateCostumerDto } from './dto/create-costumer.dto';
 import { UpdateCostumerDto } from './dto/update-costumer.dto';
 import { QueryCostumerDto } from './dto/filter-costumer.dto';
 import { SmsDTO } from './dto/sms.dto';
-import { sortByBirthday } from './costumer.helpers';
+import { sortByBirthday, minMaxDate } from './costumer.helpers';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { ResponseShape, sendSMS, convertToInternational } from '../utils';
 
@@ -44,6 +44,10 @@ export class CostumersController {
 
     if (query.nearestBirthday) {
       data = sortByBirthday(data, query.ascending);
+    }
+
+    if (query.dateMax || query.dateMin) {
+      data = minMaxDate(data, query.dateMin, query.dateMax);
     }
 
     return new ResponseShape(true, data);
