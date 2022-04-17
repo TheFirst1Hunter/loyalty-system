@@ -99,16 +99,24 @@ export const minMaxDate = (
 
     // console.debug(data[index].birthDate.toString());
     // console.debug(month);
+    // console.debug();
     // console.debug(getDate(maxDate.toString()));
 
-    if (month >= minDate.getMonth() - 1 && month <= maxDate.getMonth() - 1) {
-      if (month == minDate.getMonth() - 1 && month == maxDate.getMonth() - 1) {
-        if (day >= minDate.getDate() && day <= maxDate.getDate()) {
-          formattedArray.push(data[index]);
-        }
-      } else if (month != minDate.getMonth() || month != maxDate.getMonth()) {
+    if (month >= minDate.getMonth() + 1 && month <= maxDate.getMonth() + 1) {
+      // if (month == minDate.getMonth() + 1 && month == maxDate.getMonth() + 1) {
+      if (
+        (day >= minDate.getDate() && month == minDate.getMonth() + 1) ||
+        (day <= maxDate.getDate() && month == maxDate.getMonth() + 1)
+      ) {
         formattedArray.push(data[index]);
       }
+
+      if (month > minDate.getMonth() + 1 && month < maxDate.getMonth() + 1) {
+        formattedArray.push(data[index]);
+      }
+      // } else if (month != minDate.getMonth() || month != maxDate.getMonth()) {
+      //   formattedArray.push(data[index]);
+      // }
     }
   }
 
