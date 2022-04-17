@@ -86,3 +86,27 @@ export const sortByBirthday = (
 
   return descendingSort;
 };
+
+export const minMaxDate = (
+  data: Costumer[],
+  minDate: Date,
+  maxDate: Date,
+): Costumer[] => {
+  const formattedArray = [];
+
+  for (let index = 0; index < data.length; index++) {
+    const { month, day } = getDate(data[index].birthDate.toString());
+
+    if (month >= minDate.getMonth() && month <= maxDate.getMonth()) {
+      if (month == minDate.getMonth() && month == maxDate.getMonth()) {
+        if (day >= minDate.getDate() && day <= maxDate.getDate()) {
+          formattedArray.push(data[index]);
+        }
+      } else if (month != minDate.getMonth() || month != maxDate.getMonth()) {
+        formattedArray.push(data[index]);
+      }
+    }
+  }
+
+  return formattedArray;
+};
