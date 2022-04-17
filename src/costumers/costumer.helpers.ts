@@ -97,8 +97,12 @@ export const minMaxDate = (
   for (let index = 0; index < data.length; index++) {
     const { month, day } = getDate(data[index].birthDate.toString());
 
-    if (month >= minDate.getMonth() && month <= maxDate.getMonth()) {
-      if (month == minDate.getMonth() && month == maxDate.getMonth()) {
+    // console.debug(data[index].birthDate.toString());
+    // console.debug(month);
+    // console.debug(getDate(maxDate.toString()));
+
+    if (month >= minDate.getMonth() - 1 && month <= maxDate.getMonth() - 1) {
+      if (month == minDate.getMonth() - 1 && month == maxDate.getMonth() - 1) {
         if (day >= minDate.getDate() && day <= maxDate.getDate()) {
           formattedArray.push(data[index]);
         }
