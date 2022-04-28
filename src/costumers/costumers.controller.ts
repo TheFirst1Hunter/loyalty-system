@@ -99,6 +99,7 @@ export class CostumersController {
 
   @Post('/webhooks')
   async webhooks(@Body() body: any) {
+    console.debug(body);
     let responseMessage = 'default message';
 
     const chatId = body.message ? body.message.chat.id : '';
