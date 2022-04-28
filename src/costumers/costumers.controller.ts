@@ -12,6 +12,8 @@ import {
   HttpStatus,
 } from '@nestjs/common';
 
+import axios from 'axios';
+
 import { ApiQuery, ApiTags, ApiBearerAuth } from '@nestjs/swagger';
 import { CostumersService } from './costumers.service';
 import { CreateCostumerDto } from './dto/create-costumer.dto';
@@ -97,6 +99,36 @@ export class CostumersController {
 
   @Post('/webhooks')
   async webhooks(@Body() body: any) {
-    const { from, to, Body } = body;
+    let responseMessage = 'default message';
+
+    const chatId = body.message ? body.message.chat.id : '';
+
+    const incomingMessage = body.message
+      ? body.message.text
+      : 'default message';
+
+    if (incomingMessage === '/start') {
+      responseMessage =
+        'اهلا بكم في بوت التليغرام الخاص بنا 👋 \n لمعرفة كمية نقاطك ارجوك ارسل معوماتك بهذه الصيغة \n phone number,pin \n مثال: \n 07707777777,1234567';
+    }
+
+    if (incomingMessage !== '/start') {
+      const credentials = incomingMessage.split(',');
+
+      responseMessage = await this.costumersService.getCostumerWithPin(
+        credentials[0],
+        credentials[1],
+      );
+    }
+
+    await axios.post(
+      `${process.env.TELEGRAM_BOT_URL}${process.env.TELEGRAM_BOT_API_KEY}/sendMessage`,
+      {
+        chat_id: chatId,
+        text: responseMessage,
+      },
+    );
+
+    return new ResponseShape(true, '');
   }
 }
