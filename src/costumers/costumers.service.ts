@@ -103,10 +103,7 @@ export class CostumersService {
     });
   }
 
-  async getCostumerWithPin(
-    phoneNumber,
-    pin,
-  ): Promise<costumerPasswordQueryResult> {
+  async getCostumerWithPin(phoneNumber, pin): Promise<string> {
     const data = await this.prisma.costumer.findFirst({
       where: { phoneNumber },
     });
@@ -116,7 +113,7 @@ export class CostumersService {
     }
 
     return data.pin === pin
-      ? costumerPasswordQueryResult['user found']
+      ? `${data.credits}`
       : costumerPasswordQueryResult['wrong password'];
   }
 
