@@ -14,6 +14,7 @@ import { OrderService } from './order.service';
 import { CreateOrderDto } from './dto/create-order.dto';
 import { UpdateOrderDto } from './dto/update-order.dto';
 import { QueryOrderDto } from './dto/filter-order.dto';
+import { ordersWithFinalPrice } from './order.helper';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { ResponseShape } from '../utils';
 
@@ -36,7 +37,9 @@ export class OrderController {
   async findAll(@Query() query: QueryOrderDto) {
     const data = await this.orderService.findAll(query);
 
-    return new ResponseShape(true, data);
+    const newData = ordersWithFinalPrice(data);
+
+    return new ResponseShape(true, newData);
   }
 
   @Get(':id')
