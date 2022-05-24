@@ -1,5 +1,5 @@
 import { Injectable, HttpStatus, HttpException, Inject } from '@nestjs/common';
-import { Costumer, PrismaClient, BDstatus } from '@prisma/client';
+import { Costumer, PrismaClient, BDstatus, Prisma } from '@prisma/client';
 import { Cron } from '@nestjs/schedule';
 import { costumerPasswordQueryResult } from './costumers.types';
 import { CreateCostumerDto } from './dto/create-costumer.dto';
@@ -21,7 +21,9 @@ export class CostumersService {
   }
 
   async findAll(filter: QueryCostumerDto): Promise<Costumer[]> {
-    // const costumers =
+    // const orderBy: Prisma.CostumerOrderByWithAggregationInput;
+
+    // // const costumers =
     await this.prisma.costumer.findMany({
       skip: filter.skip,
       take: filter.take,
@@ -59,7 +61,13 @@ export class CostumersService {
     // where += ` and similarity("phoneNumber",'${filter.phoneNumber}') > 0.1`;
     // }
 
-    const query = ` ${select} from "Costumer" ${where} order by "birthDate" ASC limit ${
+    let sort = `"birthDate" ASC`;
+
+    if (filter.sortByCreatedAt) {
+      sort = `"createdAt" ${filter.sortByCreatedAt}`;
+    }
+
+    const query = ` ${select} from "Costumer" ${where} order by ${sort} limit ${
       filter.take || 10
     } offset ${filter.skip || 0}`;
 

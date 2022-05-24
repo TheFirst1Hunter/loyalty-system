@@ -8,7 +8,10 @@ import {
   Allow,
   IsInt,
   IsBooleanString,
+  IsEnum,
 } from 'class-validator';
+
+import { orderType } from '../costumer.types';
 
 export class QueryCostumerDto {
   @ApiProperty({ required: false, example: 0 })
@@ -69,4 +72,10 @@ export class QueryCostumerDto {
   @IsString()
   @IsOptional()
   serial: string;
+
+  @ApiProperty({ required: false, example: 'asc' })
+  @Allow()
+  @IsEnum(orderType)
+  @IsOptional()
+  sortByCreatedAt: string;
 }

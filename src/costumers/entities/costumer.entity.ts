@@ -12,4 +12,5 @@ export class Costumer implements PrismaCostumer {
   active: boolean;
   address: string;
   birthdayStatus: BDstatus;
+  createdAt: Date;
 }
