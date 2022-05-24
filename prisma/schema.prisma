@@ -34,6 +34,8 @@ model Costumer {
   birthdayStatus BDstatus @default(nothing)
   address        String   @default("")
 
+  createdAt DateTime @default(now())
+
   order Order[]
 }
 
