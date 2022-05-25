@@ -8,7 +8,10 @@ import {
   Delete,
   Query,
   UseGuards,
+  Res,
 } from '@nestjs/common';
+import { Response } from 'express';
+import ChildProcess from 'child_process';
 import { ApiQuery, ApiTags, ApiBearerAuth } from '@nestjs/swagger';
 import { OrderService } from './order.service';
 import { CreateOrderDto } from './dto/create-order.dto';
@@ -62,5 +65,18 @@ export class OrderController {
   @Delete(':id')
   async remove(@Param('id') id: string) {
     return await this.orderService.remove(id);
+  }
+
+  @Get('/excel')
+  async getSheet(@Query() query: QueryOrderDto, @Res() res: Response) {
+    const data = await this.orderService.findAll(query);
+
+    const forkedChildProcess = ChildProcess.fork('src/utils/excelProcess.mjs');
+
+    forkedChildProcess.send(data);
+
+    forkedChildProcess.on('message', () => {
+      res.download('data.csv');
+    });
   }
 }

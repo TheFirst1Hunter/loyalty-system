@@ -10,10 +10,11 @@ import {
   Put,
   HttpException,
   HttpStatus,
+  Res,
 } from '@nestjs/common';
-
 import axios from 'axios';
-
+import ChildProcess from 'child_process';
+import { Response } from 'express';
 import { ApiQuery, ApiTags, ApiBearerAuth } from '@nestjs/swagger';
 import { CostumersService } from './costumers.service';
 import { CreateCostumerDto } from './dto/create-costumer.dto';
@@ -99,7 +100,6 @@ export class CostumersController {
 
   @Post('/webhooks')
   async webhooks(@Body() body: any) {
-    console.debug(body);
     let responseMessage = 'default message';
 
     const chatId = body.message ? body.message.chat.id : '';
@@ -131,5 +131,18 @@ export class CostumersController {
     );
 
     return new ResponseShape(true, '');
+  }
+
+  @Get('/excel')
+  async getSheet(@Query() query: QueryCostumerDto, @Res() res: Response) {
+    const data = await this.costumersService.findAll(query);
+
+    const forkedChildProcess = ChildProcess.fork('src/utils/excelProcess.mjs');
+
+    forkedChildProcess.send(data);
+
+    forkedChildProcess.on('message', () => {
+      res.download('data.csv');
+    });
   }
 }
