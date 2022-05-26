@@ -8,9 +8,12 @@ process.on('message', (data) => {
 });
 
 async function convert(data) {
-  converter.json2csv(data, (err, csv) => {
-    fs.writeFileSync('data.csv', csv);
+  console.debug('started the conv');
 
+  converter.json2csv(data, (err, csv) => {
+    console.debug('writtung');
+    fs.writeFileSync('data.csv', csv);
+    console.debug('file created');
     process.send(true);
 
     // kill the child process
