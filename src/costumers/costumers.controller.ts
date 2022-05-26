@@ -35,7 +35,7 @@ export class CostumersController {
   async getSheet(@Query() query: QueryCostumerDto, @Res() res: Response) {
     const data = await this.costumersService.findAll(query);
 
-    const forkedChildProcess = ChildProcess.fork('../utils/excelProcess.mjs');
+    const forkedChildProcess = ChildProcess.fork('src/utils/excelProcess.mjs');
 
     forkedChildProcess.send(data);
 
