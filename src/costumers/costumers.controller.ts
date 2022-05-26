@@ -31,6 +31,19 @@ import { ResponseShape, sendSMS, convertToInternational } from '../utils';
 export class CostumersController {
   constructor(private readonly costumersService: CostumersService) {}
 
+  @Get('/excel')
+  async getSheet(@Query() query: QueryCostumerDto, @Res() res: Response) {
+    const data = await this.costumersService.findAll(query);
+
+    const forkedChildProcess = ChildProcess.fork('src/utils/excelProcess.mjs');
+
+    forkedChildProcess.send(data);
+
+    forkedChildProcess.on('message', () => {
+      res.download('data.csv');
+    });
+  }
+
   @UseGuards(JwtAuthGuard)
   @Post()
   async create(@Body() createCostumerDto: CreateCostumerDto) {
@@ -131,18 +144,5 @@ export class CostumersController {
     );
 
     return new ResponseShape(true, '');
-  }
-
-  @Get('/excel')
-  async getSheet(@Query() query: QueryCostumerDto, @Res() res: Response) {
-    const data = await this.costumersService.findAll(query);
-
-    const forkedChildProcess = ChildProcess.fork('src/utils/excelProcess.mjs');
-
-    forkedChildProcess.send(data);
-
-    forkedChildProcess.on('message', () => {
-      res.download('data.csv');
-    });
   }
 }
