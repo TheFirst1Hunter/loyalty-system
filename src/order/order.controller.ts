@@ -69,14 +69,10 @@ export class OrderController {
 
   @Get('/excel')
   async getSheet(@Query() query: QueryOrderDto, @Res() res: Response) {
-    const data = await this.orderService.findAll(query);
-
-    const forkedChildProcess = ChildProcess.fork('src/utils/excelProcess.mjs');
-
-    forkedChildProcess.send(data);
-
-    forkedChildProcess.on('message', () => {
-      res.download('data.csv');
-    });
+    // const data = await this.orderService.findAll(query);
+    // const forkedChildProcess = ChildProcess.fork('src/utils/excelProcess.mjs');
+    // forkedChildProcess.send(data);
+    // forkedChildProcess.on('message', () => {
+    //   res.download('data.csv');
   }
 }
