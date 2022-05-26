@@ -7,18 +7,17 @@ process.on('message', (data) => {
   // send the results back to the parent process
 });
 
-async function convert(data) {
+function convert(data) {
   console.debug('started the conv');
 
   converter.json2csv(data, (err, csv) => {
     console.debug('writtung');
-    fs.writeFileSync('data.csv', csv);
-    console.debug('file created');
-    process.send(true);
+    fs.writeFile('data.csv', csv, () => {
+      console.debug('file created');
+      process.send(true);
 
-    // kill the child process
-    process.exit();
+      // kill the child process
+      process.exit();
+    });
   });
-
-  return;
 }
