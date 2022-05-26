@@ -36,7 +36,7 @@ export class CostumersController {
 
     await axios({
       method: 'post',
-      url: 'http://http://[::1]:9000/excel',
+      url: 'http://localhost:9000/excel',
       data: { data },
       maxContentLength: Infinity,
       maxBodyLength: Infinity,
