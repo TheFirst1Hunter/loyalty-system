@@ -23,13 +23,13 @@ import { ResponseShape } from '../utils';
 
 @ApiBearerAuth()
 @ApiTags('order')
-@UseGuards(JwtAuthGuard)
 @Controller('order')
 export class OrderController {
   constructor(private readonly orderService: OrderService) {}
 
   @Get('/excel')
   async getSheet(@Query() query: QueryOrderDto, @Res() res: Response) {
+    console.debug('in the controller');
     const data = await this.orderService.findAll(query);
 
     await axios({
@@ -43,6 +43,7 @@ export class OrderController {
     res.download('data.csv');
   }
 
+  @UseGuards(JwtAuthGuard)
   @Post()
   async create(@Body() createOrderDto: CreateOrderDto) {
     const data = await this.orderService.create(createOrderDto);
@@ -51,6 +52,7 @@ export class OrderController {
   }
 
   @ApiQuery({ type: QueryOrderDto })
+  @UseGuards(JwtAuthGuard)
   @Get()
   async findAll(@Query() query: QueryOrderDto) {
     const data = await this.orderService.findAll(query);
@@ -60,6 +62,7 @@ export class OrderController {
     return new ResponseShape(true, newData);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Get(':id')
   async findOne(@Param('id') id: string) {
     const data = await this.orderService.findOne(id);
@@ -67,6 +70,7 @@ export class OrderController {
     return new ResponseShape(true, data);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Put(':id')
   async update(
     @Param('id') id: string,
@@ -77,6 +81,7 @@ export class OrderController {
     return new ResponseShape(true, data);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Delete(':id')
   async remove(@Param('id') id: string) {
     return await this.orderService.remove(id);
