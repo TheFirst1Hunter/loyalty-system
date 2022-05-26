@@ -3,8 +3,6 @@ const app = express();
 const fs = require('fs');
 const converter = require('json-2-csv');
 
-const app = express();
-
 app.use(express.json({ limit: '50mb' }));
 
 app.post('/excel', async (req, res) => {
