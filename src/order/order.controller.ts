@@ -11,7 +11,7 @@ import {
   Res,
 } from '@nestjs/common';
 import { Response } from 'express';
-import ChildProcess from 'child_process';
+import axios from 'axios';
 import { ApiQuery, ApiTags, ApiBearerAuth } from '@nestjs/swagger';
 import { OrderService } from './order.service';
 import { CreateOrderDto } from './dto/create-order.dto';
@@ -69,10 +69,16 @@ export class OrderController {
 
   @Get('/excel')
   async getSheet(@Query() query: QueryOrderDto, @Res() res: Response) {
-    // const data = await this.orderService.findAll(query);
-    // const forkedChildProcess = ChildProcess.fork('src/utils/excelProcess.mjs');
-    // forkedChildProcess.send(data);
-    // forkedChildProcess.on('message', () => {
-    //   res.download('data.csv');
+    const data = await this.orderService.findAll(query);
+
+    await axios({
+      method: 'post',
+      url: 'http://localhost:9000/excel',
+      data: { data },
+      maxContentLength: Infinity,
+      maxBodyLength: Infinity,
+    });
+
+    res.download('data.csv');
   }
 }
