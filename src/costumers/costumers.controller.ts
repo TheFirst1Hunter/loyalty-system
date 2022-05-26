@@ -13,7 +13,6 @@ import {
   Res,
 } from '@nestjs/common';
 import axios from 'axios';
-import ChildProcess from 'child_process';
 import { Response } from 'express';
 import { ApiQuery, ApiTags, ApiBearerAuth } from '@nestjs/swagger';
 import { CostumersService } from './costumers.service';
@@ -35,15 +34,15 @@ export class CostumersController {
   async getSheet(@Query() query: QueryCostumerDto, @Res() res: Response) {
     const data = await this.costumersService.findAll(query);
 
-    console.debug('in the contoller');
-
-    const forkedChildProcess = ChildProcess.fork('src/utils/excelProcess.mjs');
-
-    forkedChildProcess.send(data);
-
-    forkedChildProcess.on('message', () => {
-      res.download('data.csv');
+    await axios({
+      method: 'post',
+      url: 'http://localhost:9000/excel',
+      data: { data },
+      maxContentLength: Infinity,
+      maxBodyLength: Infinity,
     });
+
+    res.download('data.csv');
   }
 
   @UseGuards(JwtAuthGuard)
