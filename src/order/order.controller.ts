@@ -28,6 +28,21 @@ import { ResponseShape } from '../utils';
 export class OrderController {
   constructor(private readonly orderService: OrderService) {}
 
+  @Get('/excel')
+  async getSheet(@Query() query: QueryOrderDto, @Res() res: Response) {
+    const data = await this.orderService.findAll(query);
+
+    await axios({
+      method: 'post',
+      url: 'http://localhost:9000/excel',
+      data: { data },
+      maxContentLength: Infinity,
+      maxBodyLength: Infinity,
+    });
+
+    res.download('data.csv');
+  }
+
   @Post()
   async create(@Body() createOrderDto: CreateOrderDto) {
     const data = await this.orderService.create(createOrderDto);
@@ -65,20 +80,5 @@ export class OrderController {
   @Delete(':id')
   async remove(@Param('id') id: string) {
     return await this.orderService.remove(id);
-  }
-
-  @Get('/excel')
-  async getSheet(@Query() query: QueryOrderDto, @Res() res: Response) {
-    const data = await this.orderService.findAll(query);
-
-    await axios({
-      method: 'post',
-      url: 'http://localhost:9000/excel',
-      data: { data },
-      maxContentLength: Infinity,
-      maxBodyLength: Infinity,
-    });
-
-    res.download('data.csv');
   }
 }
